@@ -8,6 +8,8 @@ class SignInComponent extends Component {
         return (
             <div>
 
+                <H1>SIGN IN</H1>
+
 
             </div>
         )
