@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import AuthenticationService from './AuthenticationService'
 import moment from 'moment'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
+import UserDataService from '../../api/UserDataService.js'
 
 
 
@@ -20,6 +21,26 @@ class SignInComponent extends Component {
         }
     }
 
+    componentDidMount() {
+
+    }
+
+    onSubmit=(values)=> {
+        let role = values.role
+        let user = {
+            firstname : values.firstname,
+            lastname : values.lastname,
+            email : values.email,
+            password : values.password,
+            birth: values.birth,
+            role : values.role
+        }
+        UserDataService.createUser(user, role)
+        {this.props.history.push(`/login`)}
+        
+        
+    }
+
 
     render() {
 
@@ -32,11 +53,16 @@ class SignInComponent extends Component {
 
                 <div className="container">
                     <Formik
-
-
-
-
-
+                    initialValues={{
+                        email : email,
+                        password : password,
+                        bith : bith
+                    }}
+                    onSubmit={this.onSubmit}
+                    validate={this.validate}
+                    validateOnChange={false}
+                    validateOnBlur={true}
+                    enableReinitialize={true}
 
                     >
                         {
@@ -77,90 +103,23 @@ class SignInComponent extends Component {
                                     </fieldset>
                                     <fieldset className="form-group">
                                         <label>Rolle</label>
-                                        <Field className="form-control" type="date" name="birth" />
-                                        <ErrorMessage name="birth" component="div" className="alert alert-warning"></ErrorMessage>
+                                        <Field className="form-control" as="select" name="role">
+                                        <option value="admin">Admin</option>
+                                        <option value="sekretary">Sekretariat</option>
+                                        <option value="professor">Lehrer</option>
+                                        <option value="student">Lernender</option>
+                                        </Field>
+                                        <ErrorMessage name="role" component="div" className="alert alert-warning"></ErrorMessage>
                                     </fieldset>
-
-
-
-
-
-
-
-
+                                    <button className="btn btn-success">save</button>
                                 </Form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                             )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     </Formik>
 
-
-
-
-
-
-
-
-
-
-
-
-
                 </div>
-
-
-
-
             </div>
         )
 
