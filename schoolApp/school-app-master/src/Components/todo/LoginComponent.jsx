@@ -42,7 +42,9 @@ class LoginComponent extends Component {
     render() {
         return (
             //TRUE && True returns the second term !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
             <div className="container-fluid bg">
+                <div className="container"><h1>Login</h1></div>
                 <div className="row">
                     <div className="col-md-4 col-sm-4 col-xs-12"></div>
                     <div className="col-md-4 col-sm-4 col-xs-12">
