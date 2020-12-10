@@ -12,12 +12,12 @@ class SignInComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            firstname: '',
-            lastname: '',
+            firstName: 'HAMMA',
+            lastName: 'HAMMA',
             email: 'example@example.com',
-            password: '*********',
-            bith: moment(new Date()).format('YYYY-MM-DD'),
-            role: ''
+            password: 'HAMMA',
+            role : 'admin',
+            bithDate: moment(new Date()).format('YYYY-MM-DD')
         }
     }
 
@@ -28,15 +28,19 @@ class SignInComponent extends Component {
     onSubmit=(values)=> {
         let role = values.role
         let user = {
-            firstname : values.firstname,
-            lastname : values.lastname,
+            firstName : values.firstName,
+            lastName : values.lastName,
             email : values.email,
             password : values.password,
-            birth: values.birth,
-            role : values.role
+            role : values.role,
+            birthDate: values.birthDate
         }
         UserDataService.createUser(user, role)
-        {this.props.history.push(`/login`)}
+        //.then(() => {this.props.history.push(`/login`)})
+        .catch(err => {
+            //Handle your error here
+            console.log(err.response);
+        })
         
         
     }
@@ -44,7 +48,7 @@ class SignInComponent extends Component {
 
     render() {
 
-        let { firstname, lastname, email, password, bith, role } = this.state
+        let { firstName, lastName, email, password,role, bithDate } = this.state
 
 
         return (
@@ -54,9 +58,13 @@ class SignInComponent extends Component {
                 <div className="container">
                     <Formik
                     initialValues={{
+                        firstName : firstName,
+                        lastName : lastName,
+                    
                         email : email,
                         password : password,
-                        bith : bith
+                        role : role,
+                        bithDate : bithDate
                     }}
                     onSubmit={this.onSubmit}
                     validate={this.validate}
@@ -73,13 +81,13 @@ class SignInComponent extends Component {
 
                                     <fieldset className="form-group">
                                         <label>Vorname</label>
-                                        <Field className="form-control" type="text" name="firstname" />
-                                        <ErrorMessage name="firstname" component="div" className="alert alert-warning"></ErrorMessage>
+                                        <Field className="form-control" type="text" name="firstName" />
+                                        <ErrorMessage name="firstName" component="div" className="alert alert-warning"></ErrorMessage>
                                     </fieldset>
                                     <fieldset className="form-group">
                                         <label>Name</label>
-                                        <Field className="form-control" type="text" name="lastname" />
-                                        <ErrorMessage name="lastname" component="div" className="alert alert-warning"></ErrorMessage>
+                                        <Field className="form-control" type="text" name="lastName" />
+                                        <ErrorMessage name="lastName" component="div" className="alert alert-warning"></ErrorMessage>
                                     </fieldset>
                                     <fieldset className="form-group">
                                         <label>Email Adresse</label>
@@ -98,15 +106,15 @@ class SignInComponent extends Component {
                                     </fieldset>
                                     <fieldset className="form-group">
                                         <label>Geburtsdatum</label>
-                                        <Field className="form-control" type="date" name="birth" />
-                                        <ErrorMessage name="birth" component="div" className="alert alert-warning"></ErrorMessage>
+                                        <Field className="form-control" type="date" name="birthDate" />
+                                        <ErrorMessage name="birthDate" component="div" className="alert alert-warning"></ErrorMessage>
                                     </fieldset>
                                     <fieldset className="form-group">
                                         <label>Rolle</label>
                                         <Field className="form-control" as="select" name="role">
-                                        <option value="admin">Admin</option>
-                                        <option value="sekretary">Sekretariat</option>
-                                        <option value="professor">Lehrer</option>
+                                        <option key="admin" value="admin">admin</option>
+                                        <option value="sekretary">sekretariat</option>
+                                        <option value="professor">lehrer</option>
                                         <option value="student">Lernender</option>
                                         </Field>
                                         <ErrorMessage name="role" component="div" className="alert alert-warning"></ErrorMessage>

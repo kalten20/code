@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface StudentRepository<Student,Long> extends UserJpaRepository {
+public interface StudentRepository extends UserJpaRepository {
 
     @Override
     @Query("FROM Student")

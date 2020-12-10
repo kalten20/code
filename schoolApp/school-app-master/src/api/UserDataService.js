@@ -6,7 +6,7 @@ class UserDataService {
 
     createUser(user, role){
         AuthenticationService.setupAxiosInterceptors()
-        return axios.post(`${JPA_API_URL}/${role}/neu`, user)
+        return axios.post(`${API_URL}/${role}/neu`, user)
     }
 }
 export default new UserDataService

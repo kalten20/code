@@ -55,6 +55,7 @@ class TodoComponent extends Component {
                     //Handle your error here
                     console.log(err.response);
                 })
+                { this.props.history.push(`/termine`) }
         }
             
     }
