@@ -10,6 +10,7 @@ import LogoutComponent from './LogoutComponent.jsx'
 import WellcomeComponent from './WellcomeComponent.jsx'
 import ErrorComponent from './ErrorComponent'
 import TodoComponent from './TodoComponent'
+import SignInComponent from './SignInComponent'
 
 
 class TodoApp extends Component {
@@ -24,6 +25,8 @@ class TodoApp extends Component {
 
                         <Route path="/" exact component={LoginComponent} />
                         <Route path="/login" component={LoginComponent} />
+                        <Route path="/registrieren" component={SignInComponent} />
+
                         <AuthenticatedRoute path="/wellcome/:name" component={WellcomeComponent} />
                         <AuthenticatedRoute path="/termine/:id" component={TodoComponent} />
 
