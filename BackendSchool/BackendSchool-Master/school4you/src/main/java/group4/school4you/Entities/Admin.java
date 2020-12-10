@@ -14,4 +14,6 @@ public class Admin extends User {
         super(firstName,lastName,email,password,role,birthDate);
     }
 
+    public void setApproved(User user) { user.isApproved = true;}
+
 }
