@@ -26,9 +26,15 @@ public class AdminResource {
      */
     @PutMapping(path = "/admin/approve/{id}")
     public void approveUser(@PathVariable long id){
-        User toEdit = userService.findById(id);
-        admin.setApproved(toEdit);
-        userRepository.save(toEdit);
+        if(userService.userExists(id)) {
+            User toEdit = userService.findById(id);
+            admin.setApproved(toEdit);
+            userRepository.save(toEdit);
+        } else {
+            //eigentlich unnötig, weil admin ja sowieso nur alle angezeigt werden, die auch
+            //in der Datenbank - nochmal überprüfen!!
+            System.out.println("Fehlermeldung einfügen/User existiert nicht.");
+        }
     }
 
 
