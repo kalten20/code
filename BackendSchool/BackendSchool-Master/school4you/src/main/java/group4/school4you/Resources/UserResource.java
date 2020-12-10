@@ -1,9 +1,6 @@
 package group4.school4you.Resources;
 
-import group4.school4you.Entities.Admin;
-import group4.school4you.Entities.Secretary;
-import group4.school4you.Entities.Student;
-import group4.school4you.Entities.User;
+import group4.school4you.Entities.*;
 import group4.school4you.Repositories.*;
 import group4.school4you.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,47 +25,52 @@ public class UserResource {
     @Autowired
     private AdminRepository adminRepository;
     @Autowired
-    private SecretaryRepository sekretaryRepository;
+    private SecretaryRepository secretaryRepository;
 
-    @GetMapping(path = "/students/all")
-    public List<User> getAllStudents() {
-        //return an Optional object
-        List<User> all = studentRepository.findAll();
-        return all;
-    }
+        @GetMapping(path = "/{role}/all")
+    public List<User> getAllByRole(@PathVariable String role) {
+            if (role.equals("student")) {
+                List<User> allStudents = studentRepository.findAll();
+                return allStudents;
+            } else if (role.equals("teacher")) {
+                List<User> allTeachers = teacherRepository.findAll();
+                return allTeachers;
+            } else if (role.equals("secretary")) {
+                List<User> allSecretary = secretaryRepository.findAll();
+                return allSecretary;
+            } else if (role.equals("admin")) {
+                List<User> allAdmin = adminRepository.findAll();
+                return allAdmin;
+            }
+            return null;
+        }
 
-    @GetMapping(path = "/teachers/all")
-    public List<User> getAllTeachers() {
-        //return an Optional object
-        List<User> all = teacherRepository.findAll();
-        return all;
-    }
 
 
     @PostMapping(path = "/{role}/neu")
-    public Student createUser(@PathVariable String role,
-                                     @RequestBody Student student) {
+    public User createUser(@PathVariable String role, @RequestBody User user) {
 
-        return studentRepository.save(student);
-
-//        switch (role) {
-//            case "admin" : adminRepository.save(user);
-//            break;
-//            case "secretary" : sekretaryRepository.save(user);
-//            break;
-//            case "teacher" : teacherRepository.save(user);
-//            break;
-//            case "student" : studentRepository.save(user);
-//            break;
-//            default : return null;
-//        } return null;
-
+        if (role.equals("student")) {
+            Student neuStudent = new Student(user.getFirstName(),
+                    user.getLastName(), user.getEmail(), user.getPassword(),
+                    user.getRole(), user.getBirthDate());
+            return studentRepository.save(neuStudent);
+        } else if (role.equals("teacher")) {
+            Teacher neuTeacher = new Teacher(user.getFirstName(),
+                    user.getLastName(), user.getEmail(), user.getPassword(),
+                    user.getRole(), user.getBirthDate());
+            return teacherRepository.save(neuTeacher);
+        } else if (role.equals("secretary")) {
+            Secretary neuSecretary = new Secretary(user.getFirstName(),
+                    user.getLastName(), user.getEmail(), user.getPassword(),
+                    user.getRole(), user.getBirthDate());
+            return secretaryRepository.save(neuSecretary);
+        } else if (role.equals("admin")) {
+            Admin neuAdmin = new Admin(user.getFirstName(),
+                    user.getLastName(), user.getEmail(), user.getPassword(),
+                    user.getRole(), user.getBirthDate());
+            return adminRepository.save(neuAdmin);
+        }
+        return null;
     }
-
-
-
-
-
-
-
 }
