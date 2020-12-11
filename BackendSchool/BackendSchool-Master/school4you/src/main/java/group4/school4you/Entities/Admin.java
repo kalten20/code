@@ -16,4 +16,12 @@ public class Admin extends User {
 
     public void setApproved(User user) { user.isApproved = true;}
 
+    public void changeUsersMailAdress(User user, String mailAdress){
+        user.setEmail(mailAdress);
+    }
+
+    public void changeUsersName(User user, String firstName, String lastName){
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+    }
 }
