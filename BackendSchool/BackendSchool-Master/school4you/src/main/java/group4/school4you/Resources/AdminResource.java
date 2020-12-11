@@ -21,21 +21,40 @@ public class AdminResource {
 
 
     /**
-     * This method gets an id and turns the isApproved of the belonging user to true.
-     * @param id the id to get the belonging user from the database.
+     * This method allows an admin to approve an user in the database.
+     * @param id The id to get the belonging user from the database.
      */
     @PutMapping(path = "/admin/approve/{id}")
     public void approveUser(@PathVariable long id){
-        if(userService.userExists(id)) {
             User toEdit = userService.findById(id);
-            admin.setApproved(toEdit);
-            userRepository.save(toEdit);
-        } else {
-            //eigentlich unnötig, weil admin ja sowieso nur alle angezeigt werden, die auch
-            //in der Datenbank - nochmal überprüfen!!
-            System.out.println("Fehlermeldung einfügen/User existiert nicht.");
-        }
+                admin.setApproved(toEdit);
+                userRepository.save(toEdit);
     }
 
+
+    /**
+     * This method allows an admin to change the users mail adress.
+     * @param id The id to identify the belonging user from the database.
+     * @param mailAdress The new mail adress the user gets.
+     */
+    @PutMapping(path = "/admin/editUser/{id}/{mailAdress}")
+    public void editUsersMail(@PathVariable long id, @PathVariable String mailAdress){
+            User toEdit = userService.findById(id);
+            admin.changeUsersMailAdress(toEdit, mailAdress);
+            userRepository.save(toEdit);
+    }
+
+    /**
+     * This method allows an admin to change the users name.
+     * @param id The id to identify the belonging user from the database
+     * @param firstName The new first name of the user.
+     * @param lastName The new last name of the user.
+     */
+    @PutMapping(path = "/admin/editUser/{id}/{firstName}/{lastName}")
+    public void editUsersName(@PathVariable long id, @PathVariable String firstName, @PathVariable String lastName){
+            User toEdit = userService.findById(id);
+            admin.changeUsersName(toEdit, firstName, lastName);
+            userRepository.save(toEdit);
+    }
 
 }
