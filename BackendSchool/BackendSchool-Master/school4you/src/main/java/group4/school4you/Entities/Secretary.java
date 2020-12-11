@@ -13,4 +13,6 @@ public class Secretary extends User {
             ,String password, String role, LocalDate birthDate) {
         super(firstName,lastName,email,password,role,birthDate);
     }
+
+    public void setApproved(User user) { user.isApproved = true;}
 }
