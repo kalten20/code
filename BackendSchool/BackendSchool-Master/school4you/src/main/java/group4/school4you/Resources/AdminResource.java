@@ -3,7 +3,6 @@ package group4.school4you.Resources;
 import group4.school4you.Entities.Admin;
 import group4.school4you.Entities.User;
 import group4.school4you.Repositories.AdminRepository;
-import group4.school4you.Repositories.StudentRepository;
 import group4.school4you.Repositories.UserJpaRepository;
 import group4.school4you.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +54,16 @@ public class AdminResource {
             User toEdit = userService.findById(id);
             admin.changeUsersName(toEdit, firstName, lastName);
             userRepository.save(toEdit);
+    }
+
+    /**
+     * This method allows an admin to delete an user.
+     * @param id The id to get the user which is deleted.
+     */
+    @DeleteMapping (path = "/admin/deleteUser/{id}" )
+    @CrossOrigin(origins = "http://localhost:4200")
+    public void deleteUser(@PathVariable long id) {
+       userRepository.deleteById(id);
     }
 
 }
