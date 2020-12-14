@@ -21,7 +21,7 @@ public class User {
     private LocalDate creationDate = LocalDate.now();
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
-    private boolean isApproved = false;
+    protected boolean isApproved = false;
 
     public User(){}
 
@@ -62,8 +62,6 @@ public class User {
     }
 
     public boolean isApproved(){ return isApproved;}
-
-    public void setApproved(boolean isApproved) { this.isApproved = isApproved;}
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

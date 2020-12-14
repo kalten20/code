@@ -26,6 +26,8 @@ public class UserResource {
     private AdminRepository adminRepository;
     @Autowired
     private SecretaryRepository secretaryRepository;
+    @Autowired
+    private ParentRepository parentRepository;
 
         @GetMapping(path = "/{role}/all")
     public List<User> getAllByRole(@PathVariable String role) {
@@ -41,6 +43,9 @@ public class UserResource {
             } else if (role.equals("admin")) {
                 List<User> allAdmin = adminRepository.findAll();
                 return allAdmin;
+            } else if(role.equals("parent")) {
+                List<User> allParents = parentRepository.findAll();
+                return allParents;
             }
             return null;
         }
