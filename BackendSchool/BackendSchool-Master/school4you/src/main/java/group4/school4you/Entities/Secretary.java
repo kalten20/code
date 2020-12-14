@@ -20,6 +20,15 @@ public class Secretary extends User {
     private StudentRepository studentRepository;
     private ParentRepository parentRepository;
 
+    public void changeUsersMailAdress(User user, String mailAdress){
+        user.setEmail(mailAdress);
+    }
+
+    public void changeUsersName(User user, String firstName, String lastName){
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+    }
+
     public void setApproved(User user) { user.isApproved = true;}
 
     /**
