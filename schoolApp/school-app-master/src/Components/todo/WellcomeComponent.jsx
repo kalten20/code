@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import HelloWorldService from '../../api/HelloWorldService.js'
+import styles from '../../Styles.module.css'
 
 class WellcomeComponent extends Component {
 
@@ -21,7 +22,7 @@ class WellcomeComponent extends Component {
         return (
             <>
             <div>
-                <h1>Willkommen</h1>
+                <h1 className={styles.myStyle}>Willkommen</h1>
                 <div className="container">
                     Willkommen {this.props.match.params.name}.
                 </div>

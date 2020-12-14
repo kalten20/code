@@ -13,7 +13,10 @@ public class AdminResource {
 
     @Autowired
     private AdminRepository adminRepository;
+
     private UserService userService;
+
+
 
 
 
