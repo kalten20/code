@@ -8,6 +8,9 @@ import group4.school4you.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminResource {
@@ -25,7 +28,7 @@ public class AdminResource {
      */
     @PutMapping(path = "/admin/approve/{id}")
     public void approveUser(@PathVariable long id){
-            User toEdit = userService.findById(id);
+                User toEdit = userService.findById(id);
                 admin.setApproved(toEdit);
                 userRepository.save(toEdit);
     }
