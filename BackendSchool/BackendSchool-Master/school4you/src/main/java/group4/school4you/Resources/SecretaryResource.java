@@ -9,10 +9,7 @@ import group4.school4you.Repositories.StudentRepository;
 import group4.school4you.Repositories.UserJpaRepository;
 import group4.school4you.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -74,6 +71,16 @@ public class SecretaryResource {
         userRepository.save(toEdit);
     }
 
-    //OFFEN HALTEN : muss das Sekretariat die familienID ändern können? 
+    /**
+     * This method allows a secretary member to delete an user.
+     * @param id The id to get the user which is deleted.
+     */
+    @DeleteMapping(path = "/secretary/deleteUser/{id}" )
+    @CrossOrigin(origins = "http://localhost:4200")
+    public void deleteUser(@PathVariable long id) {
+        userRepository.deleteById(id);
+    }
+
+    //OFFEN HALTEN : muss das Sekretariat die familienID ändern können?
 
 }
