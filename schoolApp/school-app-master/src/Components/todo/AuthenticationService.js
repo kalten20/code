@@ -3,12 +3,14 @@ class AuthenticationService {
 
     registerSuccessfullLogin(username, password) {
        sessionStorage.setItem('authenticatedUser', username) 
+       sessionStorage.setItem('authenticatedRole', 'admin') 
        this.setupAxiosInterceptors();
 
     }
 
     logout() {
         sessionStorage.removeItem('authenticatedUser')
+        sessionStorage.removeItem('authenticatedRole')
     }
 
     isUserLoggedIn(){

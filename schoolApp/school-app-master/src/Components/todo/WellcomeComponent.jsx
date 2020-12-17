@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import HelloWorldService from '../../api/HelloWorldService.js'
 import styles from '../../Styles.module.css'
+import HeaderComponent from './HeaderComponent'
+
 
 class WellcomeComponent extends Component {
 

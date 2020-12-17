@@ -14,18 +14,28 @@ import SignInComponent from './SignInComponent'
 
 
 class TodoApp extends Component {
+    state={
+        authenticated : false, 
+        approved : false, 
+        id : null,
+        role :null
+    }
     render() {
+
+        //replace wellcomecomponent by SESSION session stores all data of the current user
         return (
             <div className="todoApp">
 
                 <Router>
-                    <HeaderComponent />
+                    <HeaderComponent auth={this.state.authenticated} approved={this.state.approved} 
+                                    id={this.state.id} role={this.state.role} />
 
                     <Switch>
 
                         <Route path="/" exact component={LoginComponent} />
                         <Route path="/login" component={LoginComponent} />
                         <Route path="/registrieren" component={SignInComponent} />
+                        
 
                         <AuthenticatedRoute path="/wellcome/:name" component={WellcomeComponent} />
                         <AuthenticatedRoute path="/termine/:id" component={TodoComponent} />
