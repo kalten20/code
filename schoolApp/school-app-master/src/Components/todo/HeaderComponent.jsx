@@ -12,6 +12,12 @@ class HeaderComponent extends Component {
     render() {
 
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn()
+        const isUserApproved = AuthenticationService.isUserApproved()
+        console.log(isUserApproved)
+
+        
+        
+        
 
 
         return (
@@ -23,7 +29,7 @@ class HeaderComponent extends Component {
                     <div><a className="navbar-brand">School4You</a></div>
 
                     <ul className="navbar-nav">
-                        {isUserLoggedIn && <li><Link className="nav-link" to="/Wellcome/ali"><FaHome/> Start</Link></li>}
+                        {isUserLoggedIn && isUserApproved &&<li><Link className="nav-link" to="/Wellcome/ali"><FaHome/> Start</Link></li>}
                         {isUserLoggedIn && <li><Link className="nav-link" to="/termine"><FaUniversity/> Veranstaltungen</Link></li>}
                         {isUserLoggedIn && <li><Link className="nav-link" to="/termine"><FaCalendarAlt/> Planer</Link></li>}
                     </ul>

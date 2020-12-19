@@ -35,7 +35,9 @@ class SignInComponent extends Component {
         }
 
         UserDataService.createUser(user, role)
-        .then(() => { this.props.history.push(`/login`)})
+        .then(() => { 
+            //this.props.history.push(`/login`)
+        })
         .catch(err => {
             //Handle your error here
             console.log(err.response);
@@ -110,9 +112,9 @@ class SignInComponent extends Component {
                                     <label>Rolle</label>
                                     <Field className="form-control" as="select" name="role">
                                     <option key="admin" value="admin">admin</option>
-                                    <option value="sekretary">sekretariat</option>
-                                    <option value="professor">lehrer</option>
-                                    <option value="student">Lernender</option>
+                                    <option key ="secretary" value="secretary">sekretariat</option>
+                                    <option key="teacher" value="teacher">lehrer</option>
+                                    <option key = "student" value="student">Lernender</option>
                                     </Field>
                                     <ErrorMessage name="role" component="div" className="alert alert-warning"></ErrorMessage>
                                 </fieldset>
