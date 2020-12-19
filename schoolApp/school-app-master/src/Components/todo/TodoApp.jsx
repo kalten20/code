@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import AuthenticationService from './AuthenticationService'
 import AuthenticatedRoute from './AuthenticatedRoute.jsx'
 import HeaderComponent from './HeaderComponent'
+import DynamicHeaderComponent from './DynamicHeaderComponent'
 import LoginComponent from './LoginComponent'
 import ListTodosComponent from './ListTodoComponent'
 import FooterComponent from './FooterComponent'
@@ -11,6 +12,8 @@ import WellcomeComponent from './WellcomeComponent.jsx'
 import ErrorComponent from './ErrorComponent'
 import TodoComponent from './TodoComponent'
 import SignInComponent from './SignInComponent'
+import UserBuilder from '../UserBuilder/UserBuilder'
+import User from '../UserBuilder/User'
 
 
 class TodoApp extends Component {
@@ -20,14 +23,24 @@ class TodoApp extends Component {
         id : null,
         role :null
     }
+
+    componentDidMount() {
+
+
+    }
+
+    componentDidUpdate() {
+
+    }
     render() {
+
 
         //replace wellcomecomponent by SESSION session stores all data of the current user
         return (
             <div className="todoApp">
 
                 <Router>
-                    <HeaderComponent auth={this.state.authenticated} approved={this.state.approved} 
+                    <DynamicHeaderComponent auth={this.state.authenticated} approved={this.state.approved} 
                                     id={this.state.id} role={this.state.role} />
 
                     <Switch>
@@ -41,6 +54,8 @@ class TodoApp extends Component {
                         <AuthenticatedRoute path="/termine/:id" component={TodoComponent} />
 
                         <AuthenticatedRoute path="/termine" component={ListTodosComponent} />
+                        <AuthenticatedRoute path="/verwalten/anzeigen/:id" component={User} />
+                        <AuthenticatedRoute path="/verwalten/:role" component={UserBuilder} />
                         <AuthenticatedRoute path="/logout" component={LogoutComponent} />
                         <Route component={ErrorComponent} />
 

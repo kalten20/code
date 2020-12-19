@@ -50,6 +50,17 @@ public class UserResource {
             return null;
         }
 
+    @GetMapping(path = "/users/{id}")
+        public User getAllByRole(@PathVariable Long id) {
+            return userJpaRepository.findById(id).get();
+    }
+
+
+    @GetMapping(path = "/users/all")
+    public List<User> getAllUsers() {
+            return userJpaRepository.findAll();
+    }
+
 
 
     @PostMapping(path = "/{role}/neu")

@@ -4,6 +4,8 @@ class AuthenticationService {
     registerSuccessfullLogin(username, password) {
        sessionStorage.setItem('authenticatedUser', username) 
        sessionStorage.setItem('authenticatedRole', 'admin') 
+       sessionStorage.setItem('approved', false) 
+
        this.setupAxiosInterceptors();
 
     }
@@ -11,12 +13,20 @@ class AuthenticationService {
     logout() {
         sessionStorage.removeItem('authenticatedUser')
         sessionStorage.removeItem('authenticatedRole')
+        sessionStorage.clear()
     }
 
     isUserLoggedIn(){
         let user = sessionStorage.getItem('authenticatedUser')
         if(user === null) return false
         else return true
+    }
+
+    isUserApproved() {
+        if(this.isUserLoggedIn) {
+            //this will have to be rendrered from backend
+            return sessionStorage.getItem('approved')
+        }
     }
 
     getLoggedInUserName() {
