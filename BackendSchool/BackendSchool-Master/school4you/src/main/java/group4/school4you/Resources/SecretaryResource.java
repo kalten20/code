@@ -3,13 +3,14 @@ package group4.school4you.Resources;
 import group4.school4you.Entities.Secretary;
 import group4.school4you.Entities.Student;
 import group4.school4you.Entities.User;
-import group4.school4you.Repositories.ParentRepository;
-import group4.school4you.Repositories.SecretaryRepository;
-import group4.school4you.Repositories.StudentRepository;
-import group4.school4you.Repositories.UserJpaRepository;
+import group4.school4you.Entities.schoolClass;
+import group4.school4you.Repositories.*;
+import group4.school4you.Services.SecretaryService;
 import group4.school4you.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -17,10 +18,18 @@ public class SecretaryResource {
 
     @Autowired
     private UserJpaRepository userRepository;
-    private UserService userService;
     private ParentRepository parentRepository;
     private StudentRepository studentRepository;
+    private schoolClassRepository schoolClassRepository;
+
     private Secretary secretary;
+
+    private UserService userService;
+    private SecretaryService secretaryService;
+
+
+
+
 
 
     /**
@@ -83,4 +92,25 @@ public class SecretaryResource {
 
     //OFFEN HALTEN : muss das Sekretariat die familienID ändern können?
 
+    //==========================KLASSEN=================================
+
+
+    //wollen wir wirklich eine maximale teilnehmeranzahl? kommt in der praxis ja eigentlich nicht vor,
+    //dass eine klasse so groß wird?
+    //wie handhaben wir es wenn eine klasse mit diesem namen schon existiert?
+    /**
+     * With this method a secretary user creates a new class. It checks if the class is already existing
+     * in the database. If not it creates a new one.
+     * @param className The name of the new class.
+     * @param maxParticipants Maximum of participants the new class can take.
+     */
+    @PostMapping(path = "/{className}/{maxParticipants}/neu")
+    public void createClass(@PathVariable String className, @PathVariable int maxParticipants) {
+        if(secretaryService.findByName(className).equals(null)){
+            schoolClass newClass = new schoolClass(className, maxParticipants);
+            schoolClassRepository.save(newClass);
+        } else {
+            System.out.println("This class already exists.");
+        }
+    }
 }

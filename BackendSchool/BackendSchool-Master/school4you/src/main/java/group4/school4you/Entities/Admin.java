@@ -3,12 +3,7 @@ package group4.school4you.Entities;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import java.time.LocalDate;
-import java.util.List;
 
-
-import group4.school4you.Repositories.SecretaryRepository;
-import group4.school4you.Repositories.TeacherRepository;
-import group4.school4you.Repositories.UserJpaRepository;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
