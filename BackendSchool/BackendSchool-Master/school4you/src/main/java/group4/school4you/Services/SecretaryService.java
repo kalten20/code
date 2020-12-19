@@ -2,6 +2,7 @@ package group4.school4you.Services;
 
 
 import group4.school4you.Entities.User;
+import group4.school4you.Entities.schoolClass;
 import group4.school4you.Repositories.*;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class SecretaryService {
 
     private StudentRepository studentRepository;
     private ParentRepository parentRepository;
+    private schoolClassRepository schoolClassRepository;
 
     /**
      * This method is for the frontend to find all unapproved users with the roles parents&students.
@@ -66,5 +68,23 @@ public class SecretaryService {
             }
         }
         return unapprovedParents;
+    }
+
+
+    /**
+     * This method helps to find a class in the database by it's name. If there is no
+     * class in the database with the name, it returns null.
+     * @param name The name of the class which is searched for.
+     * @return Return the class with the searched name or null if there is no class with this name.
+     */
+    public schoolClass findByName(String name){
+
+        List<schoolClass> allClasses = schoolClassRepository.findAll();
+        for(int i = 0; i < allClasses.size(); i++){
+            if(allClasses.get(i).getClassName().equals(name)){
+                return allClasses.get(i);
+            }
+        }
+        return null;
     }
 }
