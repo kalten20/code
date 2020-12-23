@@ -2,6 +2,7 @@ package group4.school4you.Entities;
 
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
+import java.util.List;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
@@ -9,6 +10,9 @@ public class schoolClass {
         private int id;
         private String className;
         private int maxParticipants;
+
+        private List<Student> students;
+        private List<Teacher> teachers;
 
         public schoolClass(String name, int maxPart){
             this.className = name;
@@ -32,6 +36,39 @@ public class schoolClass {
         }
         public void setMaxParticipants(int maxParticipants){
             this.maxParticipants = maxParticipants;
+        }
+
+        public List<Student> getStudents(){
+            return this.students;
+        }
+        public List<Teacher> getTeachers(){
+            return this.teachers;
+        }
+
+        public void addStudent(Student toAdd){
+            this.students.add(toAdd);
+        }
+
+        public void removeStudent(Student toRemove) {
+            if(this.students.contains(toRemove)){
+                this.students.remove(toRemove);
+            }
+        }
+
+        public boolean containsStudent(Student toCheck){
+            return this.students.contains(toCheck);
+        }
+
+        public boolean containsTeacher(Teacher toCheck){
+            return this.teachers.contains(toCheck);
+        }
+
+        public void addTeacher(Teacher toAdd){
+            this.teachers.add(toAdd);
+        }
+
+        public void removeTeacher(Teacher toRemove){
+            this.teachers.remove(toRemove);
         }
 }
 

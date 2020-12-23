@@ -1,9 +1,6 @@
 package group4.school4you.Resources;
 
-import group4.school4you.Entities.Secretary;
-import group4.school4you.Entities.Student;
-import group4.school4you.Entities.User;
-import group4.school4you.Entities.schoolClass;
+import group4.school4you.Entities.*;
 import group4.school4you.Repositories.*;
 import group4.school4you.Services.SecretaryService;
 import group4.school4you.Services.UserService;
@@ -103,14 +100,105 @@ public class SecretaryResource {
      * in the database. If not it creates a new one.
      * @param className The name of the new class.
      * @param maxParticipants Maximum of participants the new class can take.
+     * @return true if the class was added successfully. False if not(class already exists in database)
      */
-    @PostMapping(path = "/{className}/{maxParticipants}/neu")
-    public void createClass(@PathVariable String className, @PathVariable int maxParticipants) {
+    @PostMapping(path = "/classes/{className}/{maxParticipants}/neu")
+    public boolean createClass(@PathVariable String className, @PathVariable int maxParticipants) {
         if(secretaryService.findByName(className).equals(null)){
-            schoolClass newClass = new schoolClass(className, maxParticipants);
-            schoolClassRepository.save(newClass);
+            schoolClassRepository.save(secretary.createNewClass(className, maxParticipants));
+            return true;
         } else {
-            System.out.println("This class already exists.");
+            return false;
         }
     }
+
+    /**
+     * This method allows the secretary to delete a class from the database.
+     * @param className The name to get the class from the database.
+     * @return false if the class doesn't exist in the database. True if existed and deleted
+     * successfully.
+     */
+    @DeleteMapping(path = "/classes/delete/{className}")
+    public boolean deleteClass(@PathVariable String className){
+        if(secretaryService.findByName(className).equals(null)){
+            return false;
+        }else {
+            schoolClassRepository.delete(secretaryService.findByName(className));
+            return true;
+        }
+    }
+
+    /**
+     * The secretary can change a classes name.
+     * @param className The current name of a class.
+     * @param newClassName The new name for the class.
+     */
+    @PutMapping(path = "/classes/changeName/{className}/{newClassName}")
+    public void changeClassName(@PathVariable String className, @PathVariable String newClassName){
+        schoolClass toChange = secretaryService.findByName(className);
+        secretary.changeClassName(toChange, newClassName);
+        schoolClassRepository.save(toChange);
+    }
+
+    /**
+     * The secretary can change the amount of maximum participants in a class.
+     * @param className The class which the maximum of participants will be changed.
+     * @param newMaxParticipants The new maximum of participants.
+     */
+    @PutMapping(path = "/classes/changeMaxPart/{className}/{newMaxPart}")
+    public void changeMaxPart(@PathVariable String className, @PathVariable int newMaxParticipants){
+        schoolClass toChange = secretaryService.findByName(className);
+        secretary.changeMaxParticipants(toChange, newMaxParticipants);
+        schoolClassRepository.save(toChange);
+    }
+
+    /**
+     * The secretary can add an user to a class.
+     * @param className The class the secretary is editing.
+     * @param studentId The user which is added to the class.
+     */
+    @PutMapping(path = "/classes/addStudent/{className}/{studentId}")
+    public void addStudentToClass(@PathVariable String className, @PathVariable long studentId){
+        schoolClass toEdit = secretaryService.findByName(className);
+        User toAdd = userService.findById(studentId);
+        secretary.addStudentToClass(toEdit, (Student) toAdd);
+    }
+
+    /**
+     * The secretary can remove a user from a class.
+     * @param className The class to remove the user from.
+     * @param studentId The user which is removed from the class.
+     */
+    @DeleteMapping(path = "/classes/removeStudent/{className}/{studentId}")
+    public void removeStudentFromClass(@PathVariable String className, @PathVariable long studentId){
+        schoolClass toEdit = secretaryService.findByName(className);
+        User toRemove = userService.findById(studentId);
+        secretary.removeStudentFromClass(toEdit, (Student) toRemove);
+    }
+
+    /**
+     * Secretary can add a teacher to a class. The class contains a list of all teachers who teaches
+     * the class.
+     * @param className The class the teacher will be add to.
+     * @param teacherId The teacher id to get the teacher which will be added.
+     */
+    @PutMapping(path = "/classes/addTeacher/{className}/{teacherId}")
+    public void addTeacherToClass(@PathVariable String className, @PathVariable long teacherId){
+        schoolClass toEdit = secretaryService.findByName(className);
+        User toAdd = userService.findById(teacherId);
+        secretary.addTeacherToClass(toEdit, (Teacher) toAdd);
+    }
+
+    /**
+     * Secretary can remove a teacher from a class.
+     * @param className The class which the teacher is removed from.
+     * @param teacherId The teacher who will be removed from the class. 
+     */
+    @DeleteMapping(path = "/classes/removeTeacher/{className}/{teacherId}")
+    public void removeTeacherFromClass(@PathVariable String className, @PathVariable long teacherId){
+        schoolClass toEdit = secretaryService.findByName(className);
+        User toRemove = userService.findById(teacherId);
+        secretary.removeTeacherFromClass(toEdit, (Teacher) toRemove);
+    }
 }
+
