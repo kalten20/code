@@ -27,5 +27,38 @@ public class Secretary extends User {
 
     public void setApproved(User user) { user.setApproved(true);}
 
+    public schoolClass createNewClass(String className, int maxParticipants){
+        schoolClass toCreate = new schoolClass(className, maxParticipants);
+        return toCreate;
+    }
 
+    public void changeClassName(schoolClass classToChangeName, String newName){
+        classToChangeName.setClassName(newName);
+    }
+
+    public void changeMaxParticipants(schoolClass classToChange, int newMaxParticipants){
+        classToChange.setMaxParticipants(newMaxParticipants);
+    }
+
+    public void addStudentToClass(schoolClass schoolClass, Student toAdd){
+        if(!schoolClass.containsStudent(toAdd)) {
+            schoolClass.addStudent(toAdd);
+        }
+    }
+
+    public void removeStudentFromClass(schoolClass schoolClass, Student toRemove){
+        if(schoolClass.containsStudent(toRemove)){
+            schoolClass.removeStudent(toRemove);
+        }
+    }
+
+    public void addTeacherToClass(schoolClass schoolClass, Teacher toAdd){
+        if(!schoolClass.containsTeacher(toAdd)){
+            schoolClass.addTeacher(toAdd);
+        }
+    }
+
+    public void removeTeacherFromClass(schoolClass schoolClass, Teacher toRemove){
+
+    }
 }
