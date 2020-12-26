@@ -1,9 +1,7 @@
 package group4.school4you.Entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,12 +13,20 @@ public class schoolClass {
         private String className;
         private int maxParticipants;
 
+        @OneToMany
+        private List<Student> students;
+        @OneToMany
+        private List<Teacher> teachers;
+
 
 
     public schoolClass( ){}
         public schoolClass(String name, int maxPart){
             this.className = name;
             this.maxParticipants = maxPart;
+            this.students = new ArrayList<>();
+            this.teachers = new ArrayList<>();
+
         }
 
         public int getId(){
