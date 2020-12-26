@@ -61,6 +61,11 @@ public class UserResource {
             return userJpaRepository.findAll();
     }
 
+    @GetMapping(path = "/users/existingEmails")
+    public List<String> getAllExistingEmails() {
+        return userService.getExistingEmails();
+    }
+
 
 
     @PostMapping(path = "/{role}/neu")

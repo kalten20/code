@@ -33,12 +33,16 @@ class UserBuilder extends Component {
                 .then(response => {
                     this.setState({ users: response.data })
                     console.log(this.state.users)
+                }).catch(err => {
+                    console.log(err.response.data.message)
                 })
         } else if (targetRole === 'Sekretariat') {
             UserDataService.getUsersByRole('secretary')
                 .then(response => {
                     this.setState({ users: response.data })
                     console.log(this.state.users)
+                }).catch(err => {
+                    console.log(err.response.data.message)
                 })
 
         } else if (targetRole === 'Lehrer') {
@@ -46,6 +50,8 @@ class UserBuilder extends Component {
                 .then(response => {
                     this.setState({ users: response.data })
                     console.log(this.state.users)
+                }).catch(err => {
+                    console.log(err.response.data.message)
                 })
 
         } else if (targetRole === 'Lehrenden') {
@@ -53,6 +59,8 @@ class UserBuilder extends Component {
                 .then(response => {
                     this.setState({ users: response.data })
                     console.log(this.state.users)
+                }).catch(err => {
+                    console.log(err.response.data.message)
                 })
 
         } else if (targetRole === 'Eltern') {
@@ -60,6 +68,8 @@ class UserBuilder extends Component {
                 .then(response => {
                     this.setState({ users: response.data })
                     console.log(this.state.users)
+                }).catch(err => {
+                    console.log(err.response.data.message)
                 })
 
         }
@@ -89,8 +99,10 @@ class UserBuilder extends Component {
 
 
         let users = null
-
-        users = (
+        if(Array.isArray(this.state.users) && this.state.users.length <= 0) {
+            users = <h3>loading...</h3>
+        } else {
+            users = (
             <div>
                 {
                     this.state.users.map((user, index) => {
@@ -124,7 +136,9 @@ class UserBuilder extends Component {
                     })
                 }
             </div>
-        )
+        )}
+
+        
 
 
 

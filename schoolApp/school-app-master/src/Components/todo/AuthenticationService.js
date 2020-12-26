@@ -1,29 +1,40 @@
 import axios from 'axios'
 class AuthenticationService {
 
-    registerSuccessfullLogin(username, password) {
-       sessionStorage.setItem('authenticatedUser', username) 
-       sessionStorage.setItem('authenticatedRole', 'admin') 
-       sessionStorage.setItem('approved', false) 
+    authenticate(email, password) {
+        //return axios.post(`http://localhost:8080/${role}/neu`, user)
+    }
 
-       this.setupAxiosInterceptors();
+    registerSuccessfullLogin(id, firstName, lastName, role, approved) {
+        sessionStorage.setItem('authenticated', true)
+        sessionStorage.setItem('id', id)
+        sessionStorage.setItem('firstName', firstName)
+
+        sessionStorage.setItem('lastName', lastName)
+        sessionStorage.setItem('role', role)
+        sessionStorage.setItem('approved', approved)
+
+
+        this.setupAxiosInterceptors();
 
     }
 
+
+
     logout() {
-        sessionStorage.removeItem('authenticatedUser')
-        sessionStorage.removeItem('authenticatedRole')
         sessionStorage.clear()
     }
 
-    isUserLoggedIn(){
-        let user = sessionStorage.getItem('authenticatedUser')
-        if(user === null) return false
-        else return true
+    isUserLoggedIn() {
+        
+       if(sessionStorage.getItem('authenticated'))  {
+           return sessionStorage.getItem('authenticated')
+       }
+        
     }
 
     isUserApproved() {
-        if(this.isUserLoggedIn) {
+        if (this.isUserLoggedIn) {
             //this will have to be rendrered from backend
             return sessionStorage.getItem('approved')
         }
@@ -31,31 +42,31 @@ class AuthenticationService {
 
     getLoggedInUserName() {
         let user = sessionStorage.getItem('authenticatedUser')
-        if(user===null) return ''
+        if (user === null) return ''
         else return user
 
     }
 
 
-setupAxiosInterceptors() {
-    let user = 'user'
-    let password = 'password'
+    setupAxiosInterceptors() {
+        let user = 'user'
+        let password = 'password'
 
-//encoding auth header USINT BTOA JS
+        //encoding auth header USINT BTOA JS
 
-let basicAuthHeader = 'Basic ' + window.btoa(user + ":" + password)
+        let basicAuthHeader = 'Basic ' + window.btoa(user + ":" + password)
 
-    axios.interceptors.request.use(
-        (config) => {
-            if(this.isUserLoggedIn()) {
+        axios.interceptors.request.use(
+            (config) => {
+                if (this.isUserLoggedIn()) {
 
-            config.headers.authorization = basicAuthHeader
+                    config.headers.authorization = basicAuthHeader
+                }
+                return config
+
             }
-            return config
-
-        }
-    )
-}
+        )
+    }
 }
 
 

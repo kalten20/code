@@ -9,10 +9,12 @@ import { FaCalendarAlt } from "react-icons/fa";
 
 
 class DynamicHeaderComponent extends Component {
+    //add state to the header 
     render() {
 
 
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn()
+        //always get approved from the service everytime header is rendered because it could be changed
         let approved = true
 
 
