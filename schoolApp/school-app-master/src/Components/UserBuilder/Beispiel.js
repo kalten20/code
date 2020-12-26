@@ -1,12 +1,12 @@
-
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import axios from 'axios'
+import Button from '../../Button/Button'
+import AuthenticationService from '../todo/AuthenticationService'
 
-import AuthenticationService from './AuthenticationService'
 
 
-class LoginComponent extends Component {
 
+class Beispiel extends Component {
 
     state = {
         firstName: '',
@@ -76,7 +76,9 @@ class LoginComponent extends Component {
 
         return (
 
-            
+            <div>
+
+                <h1>Beispiel</h1>
 
                 <div className="container-fluid bg">
                     <div className="container"><h1>Login</h1></div>
@@ -84,13 +86,13 @@ class LoginComponent extends Component {
                         <div className="col-md-4 col-sm-4 col-xs-12"></div>
                         <div className="col-md-4 col-sm-4 col-xs-12">
 
-                            <form className="form-container" onSubmit={this.handleSubmit}>
+                            <form className="form-container" onSubmit={this.handleSubmit} id="login">
                                 {displayError}
 
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Email Addresse</label>
-                                    <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange}></input>
+                                    <input class="form-control" type="email" required id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange}></input>
                                     <small id="emailHelp" class="form-text text-muted"></small>
 
                                 </div>
@@ -108,12 +110,20 @@ class LoginComponent extends Component {
                         </div>
                         <div className="col-md-4 col-sm-4 col-xs-12"></div>
                     </div>
+                    
+                    
                 </div >
-            
+                
+            </div>
+
 
         )
     }
 
 }
+export default Beispiel
 
-export default LoginComponent
+
+
+
+

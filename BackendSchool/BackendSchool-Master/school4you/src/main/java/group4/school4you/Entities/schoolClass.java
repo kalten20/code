@@ -1,15 +1,22 @@
 package group4.school4you.Entities;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 public class schoolClass {
-        private int id;
+    @Id
+    @GeneratedValue
+    private int id;
         private String className;
         private int maxParticipants;
 
+
+
+    public schoolClass( ){}
         public schoolClass(String name, int maxPart){
             this.className = name;
             this.maxParticipants = maxPart;

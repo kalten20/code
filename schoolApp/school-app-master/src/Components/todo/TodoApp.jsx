@@ -14,6 +14,10 @@ import TodoComponent from './TodoComponent'
 import SignInComponent from './SignInComponent'
 import UserBuilder from '../UserBuilder/UserBuilder'
 import User from '../UserBuilder/User'
+import Beispiel from '../UserBuilder/Beispiel'
+import Form from '../UserBuilder/Form'
+import SignInFormValidations from './SignInFormVlidations'
+
 
 
 class TodoApp extends Component {
@@ -45,9 +49,13 @@ class TodoApp extends Component {
 
                     <Switch>
 
-                        <Route path="/" exact component={LoginComponent} />
-                        <Route path="/login" component={LoginComponent} />
-                        <Route path="/registrieren" component={SignInComponent} />
+                        <Route path="/" exact component={Form} />
+                        <Route path="/login" component={Form} />
+                        <Route path="/registrieren" component={SignInFormValidations} />
+                        <Route path="/beispiel" component={Beispiel} />
+                        <Route path="/form" component={Form} />
+                        <Route path="/signInValidation" component={SignInFormValidations} />
+
                         
 
                         <AuthenticatedRoute path="/wellcome/:name" component={WellcomeComponent} />

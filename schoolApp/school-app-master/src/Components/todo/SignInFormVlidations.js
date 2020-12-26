@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
+import * as Yup from 'yup';
+
 import UserDataService from '../../api/UserDataService.js'
+import { FaGlassMartiniAlt } from 'react-icons/fa';
+import axios from 'axios';
 
 
 
-class SignInComponent extends Component {
+
+class SignInFormValidations extends Component {
 
     constructor(props) {
         super(props)
@@ -15,11 +20,23 @@ class SignInComponent extends Component {
             email: '',
             password: '',
             role : 'admin',
-            bithDate: moment(new Date()).format('YYYY-MM-DD')
+            bithDate: moment(new Date()).format('YYYY-MM-DD'),
+            usedEmails : []
         }
     }
 
     componentDidMount() {
+        let usedEmails = []
+        axios.get(`http://localhost:8080/users/existingEmails`)
+        .then(response => {
+            console.log(response.data)
+            usedEmails = response.data
+            this.setState({usedEmails : usedEmails})
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
 
     }
 
@@ -38,7 +55,7 @@ class SignInComponent extends Component {
 
         UserDataService.createUser(user, role)
         .then(() => { 
-            //this.props.history.push(`/login`)
+            this.props.history.push(`/login`)
         })
         .catch(err => {
             //Handle your error here
@@ -48,28 +65,32 @@ class SignInComponent extends Component {
     }
 
     validate= (values) => {
-        let errors = {}
-        if(!values.firstName) {
-            errors.firstName = 'Bitte Vorname eingeben'
+         let errors = {}
+        //  if(!values.firstName) {
+        //     errors.firstName = 'Bitte Vorname eingeben'}
+        // }
+        // if(!values.lastName) {
+        //     errors.lastName = 'Bitte Nachname eingeben'
+        // }
+        // if(!values.email) {
+        //     errors.email = 'Bitte Email Adresse eingeben'
+        // }
+        // if(!values.password) {
+        //     errors.password = 'Bitte Passwort eingeben'
+        // }
+        // if(!values.repeatPassword) {
+        //     errors.repeatPassword = 'Bitte Passwort wiederholen'
+        // }
+        // if(!moment(values.birthDate).isValid()) {
+        //     errors.birthDate= 'Ungultiges Datum'
+        // }
+        if(values.password !== values.repeatPassword) {
+            errors.repeatPassword = 'Passworte stimmen nicht überein'
         }
-        if(!values.lastName) {
-            errors.lastName = 'Bitte Nachname eingeben'
-        }
-        if(!values.email) {
-            errors.email = 'Bitte Email Adresse eingeben'
-        }
-        if(!values.password) {
-            errors.password = 'Bitte Passwort eingeben'
-        }
-        if(!values.repeatPassword) {
-            errors.repeatPassword = 'Bitte Passwort wiederholen'
-        }
-        if(!moment(values.birthDate).isValid()) {
-            errors.birthDate= 'Ungultiges Datum'
-        }
+        return errors;
 
         
-        return errors
+        //return errors
 
     }
     
@@ -77,6 +98,14 @@ class SignInComponent extends Component {
     render() {
 
         let { firstName, lastName, email, password,role, bithDate } = this.state
+
+        let usedEmails = this.state.usedEmails
+        let minDate = new Date();
+        console.log(minDate)
+        minDate.setFullYear(minDate.getFullYear() - 10);
+        console.log(minDate)
+
+
 
 
         return (
@@ -91,24 +120,82 @@ class SignInComponent extends Component {
                     
                         email : email,
                         password : password,
+                        repeatPassword : '',
                         role : role,
                         bithDate : bithDate
                     }}
+                    initialTouched={{ 
+                        field: true,
+                      }}
+                      validateOnMount
                     onSubmit={this.onSubmit}
                     validate={this.validate}
                     validateOnChange={true}
                     validateOnBlur={true}
                     enableReinitialize={true}
 
+                    validationSchema ={Yup.object().shape({
+                        firstName: Yup.string()
+                        .required("Bitte Vorname eintragen")
+                        .max(20,"Zu lang")
+                            .matches(/^[a-zA-Z]*$/,"Ziffer und leerzeichen nicht zulässig "),
+
+                            
+                            
+
+                            lastName: Yup.string().required("Bitte Nachname eintragen")
+                            ,
+
+                            email : Yup.string().required("Bitte Email Adresse eintragen")
+                            .lowercase()
+                            .email("Bitte gultige Email Adresse Eintragen ***@***.***")
+                            .notOneOf(usedEmails, 'Email Adresse schon vergeben')
+                            ,
+    
+                            password : Yup.string()
+                            .required("Bitte Password eintragen")
+                            .min(8, "Password zu kurz, mindestens 8 Zeichen!")
+                            .matches(/(?=.*[0-9])/,"Passwort muss mindest eine Ziffer enthalten "),
+
+                            repeatPassword : Yup.string().required("Bitte Passwort wiederholen")
+                            // .test('repeatedPasswordTest', 'Password nicht korrekt wiederholt',
+                            // value => {
+                                
+                            //     return false
+                            // })
+
+                            //OR TO TEST REPEAT PASSWORD :   .oneOf([Yup.ref('password')])
+                            ,
+                            birthDate : Yup.date().required("Bitte Geburtsdatum eingeben")
+                            .max(minDate, 'Benuter muss mindestens 10 Jahre Alt sein')
+                            
+
+
+    
+    
+    
+    
+                    })}
+
                     >
                         {
-                            (props) =>  (
+                            props => {
+                                const {
+                                    values,
+                                    touched,
+                                    errors,
+                                    isSubmitting,
+                                    handleChange,
+                                    handleBlur,
+                                    handleSubmit
+                                } = props;
 
-                               <Form>
+                                return (
+                                    <Form >
 
                                 <fieldset className="form-group">
                                     <label>Vorname</label>
-                                    <Field className="form-control" type="text" name="firstName" placeholder="Vorname" />
+                                    <Field  className="form-control" type="text" name="firstName" value ={values.firstName} placeholder="Vorname" />
                                     <ErrorMessage name="firstName" component="small" className="form-text text-danger"></ErrorMessage>
                                 </fieldset>
                                 <fieldset className="form-group">
@@ -118,7 +205,8 @@ class SignInComponent extends Component {
                                 </fieldset>
                                 <fieldset className="form-group">
                                     <label>Email Adresse</label>
-                                    <Field className="form-control" type="text" name="email" placeholder="example@example.com" />
+                                    <Field 
+                                    className="form-control" type="text" name="email" placeholder="example@example.com" />
                                     <ErrorMessage name="email" component="small" className="form-text text-danger"></ErrorMessage>
                                 </fieldset>
                                 <fieldset className="form-group">
@@ -143,11 +231,17 @@ class SignInComponent extends Component {
                                     <option key ="secretary" value="secretary">sekretariat</option>
                                     <option key="teacher" value="teacher">lehrer</option>
                                     <option key = "student" value="student">Lernender</option>
+                                    <option key = "parent" value="parent">Eltern</option>
                                     </Field>
                                     <ErrorMessage name="role" component="div" className="alert alert-warning"></ErrorMessage>
                                 </fieldset>
-                                <button type="submit" className="btn btn-success">save</button>
+                                <button type="submit" className="btn btn-success"
+                                disabled={errors.firstName || errors.lastName ||errors.email ||errors.password ||errors.repeatPassword|| errors.birthDate  } 
+                                >save
+                                </button>
                             </Form>)
+
+                            }
                             
                         }
                     </Formik>
@@ -160,4 +254,4 @@ class SignInComponent extends Component {
     }
 }
 
-export default SignInComponent
+export default SignInFormValidations
