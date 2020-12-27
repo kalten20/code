@@ -1,8 +1,12 @@
 package group4.school4you.Entities;
 
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@PrimaryKeyJoinColumn(name = "id")
 public class Announcement {
     private long ID;
     private String sender;
