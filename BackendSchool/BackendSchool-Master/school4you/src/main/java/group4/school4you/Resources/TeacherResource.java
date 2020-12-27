@@ -1,15 +1,14 @@
 package group4.school4you.Resources;
 
 
-import group4.school4you.Entities.Exam;
-import group4.school4you.Entities.Teacher;
-import group4.school4you.Entities.User;
-import group4.school4you.Entities.schoolClass;
+import group4.school4you.Entities.*;
 import group4.school4you.Repositories.*;
 import group4.school4you.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,5 +72,17 @@ public class TeacherResource {
         Exam toEdit = examRepository.findById(examId).get();
         teacherToWorkWith.editExam(toEdit, exam.getClassID(), exam.getSubject(), exam.getDate(), exam.getDescription());
         examRepository.save(toEdit);
+    }
+
+    /**
+     * Teachers can create a sickNote they can send to the secretary. The secretary can approve the sickNote -> after
+     * that we got notes in the classes the teacher teaches.
+     * @param id The id of the teacher who reports himself sick.
+     * @param sickNote The data from the frontend for the sickNote.
+     */
+    @PostMapping(path = "/teacher/sickNote/{teacherId}")
+    public void createSickNote(@PathVariable long id, @RequestBody SickNote sickNote){
+        Teacher teacher = (Teacher) userService.findById(id);
+        teacher.createSickNote(id, sickNote.getDate(), teacher.getEmail(), teacher.getRole());
     }
 }
