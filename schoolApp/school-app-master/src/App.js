@@ -15,26 +15,13 @@ import './bootstrap.css'
 class App extends Component {
   render() {
     return (
+      <>
       <div className="App">
         
        <TodoApp/>
       
       </div>
-    );
-  }
-}
-
-
-
-class LearningComponents extends Component {
-  render() {
-    return (
-      <div className="LearningComponents">
-        Servus
-        <FirstComponent />
-        <SecondComponent />
-        <ThirdComponent />
-      </div>
+      </>
     );
   }
 }

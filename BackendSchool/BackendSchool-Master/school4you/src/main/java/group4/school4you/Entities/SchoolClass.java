@@ -1,26 +1,28 @@
 package group4.school4you.Entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
-public class schoolClass {
+public class SchoolClass {
     @Id
     @GeneratedValue
     private int id;
         private String className;
-        private int maxParticipants;
+        @OneToMany
+        private List<Student> students;
+        @ManyToMany
+        private  List<Teacher> teachers;
 
 
 
-    public schoolClass( ){}
-        public schoolClass(String name, int maxPart){
+    public SchoolClass( ){}
+        public SchoolClass(String name){
             this.className = name;
-            this.maxParticipants = maxPart;
+            students = new ArrayList<>();
+            teachers = new ArrayList<>();
         }
 
         public int getId(){
@@ -35,12 +37,7 @@ public class schoolClass {
         public void setClassName(String className){
             this.className = className;
         }
-        public int getMaxParticipants(){
-            return this.maxParticipants;
-        }
-        public void setMaxParticipants(int maxParticipants){
-            this.maxParticipants = maxParticipants;
-        }
+
 
         public List<Student> getStudents(){
             return this.students;
@@ -72,7 +69,9 @@ public class schoolClass {
         }
 
         public void removeTeacher(Teacher toRemove){
+        if (teachers.contains(toRemove)) {
             this.teachers.remove(toRemove);
+        }
         }
 }
 

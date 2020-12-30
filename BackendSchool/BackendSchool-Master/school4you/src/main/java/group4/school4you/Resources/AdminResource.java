@@ -18,7 +18,9 @@ public class AdminResource {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
     private UserService userService;
+    @Autowired
     private UserJpaRepository userRepository;
     private Admin admin;
 
@@ -30,8 +32,18 @@ public class AdminResource {
     @PutMapping(path = "/admin/approve/{id}")
     public void approveUser(@PathVariable long id){
                 User toEdit = userService.findById(id);
-                admin.setApproved(toEdit);
+                toEdit.setApproved(true);
                 userRepository.save(toEdit);
+    }
+    /**
+     * This method allows an admin to approve an user in the database.
+     * @param id The id to get the belonging user from the database.
+     */
+    @PutMapping(path = "/admin/disApprove/{id}")
+    public void disApproveUser(@PathVariable long id){
+        User toEdit = userService.findById(id);
+        toEdit.setApproved(false);
+        userRepository.save(toEdit);
     }
 
 

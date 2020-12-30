@@ -7,8 +7,6 @@ import group4.school4you.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class SecretaryResource {
@@ -17,7 +15,7 @@ public class SecretaryResource {
     private UserJpaRepository userRepository;
     private ParentRepository parentRepository;
     private StudentRepository studentRepository;
-    private schoolClassRepository schoolClassRepository;
+    private SchoolClassRepository schoolClassRepository;
 
     private Secretary secretary;
 
@@ -102,15 +100,15 @@ public class SecretaryResource {
      * @param maxParticipants Maximum of participants the new class can take.
      * @return true if the class was added successfully. False if not(class already exists in database)
      */
-    @PostMapping(path = "/classes/{className}/{maxParticipants}/neu")
-    public boolean createClass(@PathVariable String className, @PathVariable int maxParticipants) {
-        if(secretaryService.findByName(className).equals(null)){
-            schoolClassRepository.save(secretary.createNewClass(className, maxParticipants));
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    @PostMapping(path = "/classes/{className}/{maxParticipants}/neu")
+//    public boolean createClass(@PathVariable String className, @PathVariable int maxParticipants) {
+//        if(secretaryService.findByName(className).equals(null)){
+//            schoolClassRepository.save(secretary.createNewClass(className, maxParticipants));
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
     /**
      * This method allows the secretary to delete a class from the database.
@@ -135,7 +133,7 @@ public class SecretaryResource {
      */
     @PutMapping(path = "/classes/changeName/{className}/{newClassName}")
     public void changeClassName(@PathVariable String className, @PathVariable String newClassName){
-        schoolClass toChange = secretaryService.findByName(className);
+        SchoolClass toChange = secretaryService.findByName(className);
         secretary.changeClassName(toChange, newClassName);
         schoolClassRepository.save(toChange);
     }
@@ -145,12 +143,12 @@ public class SecretaryResource {
      * @param className The class which the maximum of participants will be changed.
      * @param newMaxParticipants The new maximum of participants.
      */
-    @PutMapping(path = "/classes/changeMaxPart/{className}/{newMaxPart}")
-    public void changeMaxPart(@PathVariable String className, @PathVariable int newMaxParticipants){
-        schoolClass toChange = secretaryService.findByName(className);
-        secretary.changeMaxParticipants(toChange, newMaxParticipants);
-        schoolClassRepository.save(toChange);
-    }
+//    @PutMapping(path = "/classes/changeMaxPart/{className}/{newMaxPart}")
+//    public void changeMaxPart(@PathVariable String className, @PathVariable int newMaxParticipants){
+//        SchoolClass toChange = secretaryService.findByName(className);
+//        secretary.changeMaxParticipants(toChange, newMaxParticipants);
+//        schoolClassRepository.save(toChange);
+//    }
 
     /**
      * The secretary can add an user to a class.
@@ -159,7 +157,7 @@ public class SecretaryResource {
      */
     @PutMapping(path = "/classes/addStudent/{className}/{studentId}")
     public void addStudentToClass(@PathVariable String className, @PathVariable long studentId){
-        schoolClass toEdit = secretaryService.findByName(className);
+        SchoolClass toEdit = secretaryService.findByName(className);
         User toAdd = userService.findById(studentId);
         secretary.addStudentToClass(toEdit, (Student) toAdd);
     }
@@ -171,7 +169,7 @@ public class SecretaryResource {
      */
     @DeleteMapping(path = "/classes/removeStudent/{className}/{studentId}")
     public void removeStudentFromClass(@PathVariable String className, @PathVariable long studentId){
-        schoolClass toEdit = secretaryService.findByName(className);
+        SchoolClass toEdit = secretaryService.findByName(className);
         User toRemove = userService.findById(studentId);
         secretary.removeStudentFromClass(toEdit, (Student) toRemove);
     }
@@ -184,7 +182,7 @@ public class SecretaryResource {
      */
     @PutMapping(path = "/classes/addTeacher/{className}/{teacherId}")
     public void addTeacherToClass(@PathVariable String className, @PathVariable long teacherId){
-        schoolClass toEdit = secretaryService.findByName(className);
+        SchoolClass toEdit = secretaryService.findByName(className);
         User toAdd = userService.findById(teacherId);
         secretary.addTeacherToClass(toEdit, (Teacher) toAdd);
     }
@@ -196,7 +194,7 @@ public class SecretaryResource {
      */
     @DeleteMapping(path = "/classes/removeTeacher/{className}/{teacherId}")
     public void removeTeacherFromClass(@PathVariable String className, @PathVariable long teacherId){
-        schoolClass toEdit = secretaryService.findByName(className);
+        SchoolClass toEdit = secretaryService.findByName(className);
         User toRemove = userService.findById(teacherId);
         secretary.removeTeacherFromClass(toEdit, (Teacher) toRemove);
     }

@@ -17,6 +17,12 @@ import User from '../UserBuilder/User'
 import Beispiel from '../UserBuilder/Beispiel'
 import Form from '../UserBuilder/Form'
 import SignInFormValidations from './SignInFormVlidations'
+import UserDataService from '../../api/UserDataService.js'
+import SchoolClass from '../ClassBuilder/SchoolClass'
+import SchoolClasses from '../ClassBuilder/SchoolClasses'
+import Planer from '../Planer/Planer'
+import classes from '../../Styles.module.css'
+
 
 
 
@@ -29,11 +35,29 @@ class TodoApp extends Component {
     }
 
     componentDidMount() {
+        console.log('MAIN PAGE MOUNTED')
+        if(sessionStorage.getItem('authenticated') ){
+            UserDataService.getUserById(sessionStorage.getItem('id'))
+        .then(response => {
+            this.setState({
+                approved : response.data.approved
+            })
+            sessionStorage.setItem('approved', response.data.approved)
+        })
+        .catch(error => {
+            console.log(error.response.data.message)
+        })
+
+
+        }
 
 
     }
 
     componentDidUpdate() {
+        console.log('MAIN PAGE UPDATED')
+
+
 
     }
     render() {
@@ -41,13 +65,13 @@ class TodoApp extends Component {
 
         //replace wellcomecomponent by SESSION session stores all data of the current user
         return (
-            <div className="todoApp">
+            <div className="container">
 
                 <Router>
                     <DynamicHeaderComponent auth={this.state.authenticated} approved={this.state.approved} 
                                     id={this.state.id} role={this.state.role} />
 
-                    <Switch>
+                    <Switch >
 
                         <Route path="/" exact component={Form} />
                         <Route path="/login" component={Form} />
@@ -55,15 +79,23 @@ class TodoApp extends Component {
                         <Route path="/beispiel" component={Beispiel} />
                         <Route path="/form" component={Form} />
                         <Route path="/signInValidation" component={SignInFormValidations} />
+                        <Route path="/planer" component={Planer} />
 
                         
 
-                        <AuthenticatedRoute path="/wellcome/:name" component={WellcomeComponent} />
+                        <AuthenticatedRoute path="/wellcome/:id" component={WellcomeComponent} />
                         <AuthenticatedRoute path="/termine/:id" component={TodoComponent} />
 
                         <AuthenticatedRoute path="/termine" component={ListTodosComponent} />
                         <AuthenticatedRoute path="/verwalten/anzeigen/:id" component={User} />
                         <AuthenticatedRoute path="/verwalten/:role" component={UserBuilder} />
+                        <AuthenticatedRoute path="/termine" component={ListTodosComponent} />
+
+                        <AuthenticatedRoute path="/Klassen/anzeigen/:name" component={SchoolClass} />
+
+                        <AuthenticatedRoute path="/Klassen" component={SchoolClasses} />
+                        <AuthenticatedRoute path="/Klasse" component={SchoolClass} />
+
                         <AuthenticatedRoute path="/logout" component={LogoutComponent} />
                         <Route component={ErrorComponent} />
 
