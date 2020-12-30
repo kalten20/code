@@ -5,30 +5,61 @@ import AuthenticationService from './AuthenticationService'
 import { FaHome } from "react-icons/fa";
 import { FaUniversity } from "react-icons/fa";
 import { FaCalendarAlt } from "react-icons/fa";
+import UserDataService from '../../api/UserDataService';
 
 
 
 class DynamicHeaderComponent extends Component {
-    //add state to the header 
-    render() {
+    state = {
+        isUserLoggedIn : false,
+        approved : false,
+        
+    }
 
-
+    componentDidMount () {
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn()
-        //always get approved from the service everytime header is rendered because it could be changed
-        let approved = true
+        this.setState({isUserLoggedIn : isUserLoggedIn})
+        if (isUserLoggedIn) {
+            let id = sessionStorage.getItem('id')
+            UserDataService.getUserById(id)
+            .then(response => {
+                this.setState({approved : response.data.approved})
+
+            })
+            .catch(error => {
+                console.log(error)
+            })
+            
+
+        }
+        
+    }
+
+    componentDidUpdate(){
+        
+    }
+    
+    render() {
+        const isUserLoggedIn = AuthenticationService.isUserLoggedIn()
+        
+        
 
 
-        const role = 'admin'
+        
+        
+
+
+        
         
 
         let navItems = null
 
         if (isUserLoggedIn) {
             // eslint-disable-next-line default-case
-            switch (role) {
+            switch (sessionStorage.getItem('role')) {
                 case 'admin': navItems =
                     <ul className="navbar-nav">
-                        {isUserLoggedIn && <li><Link className="nav-link" to="/Wellcome/ali"><FaHome /> Start</Link></li>}
+                        {isUserLoggedIn &&  <li><Link className="nav-link" to={"/Wellcome/"+ sessionStorage.getItem('id')}><FaHome /> Start</Link></li>}
                         {isUserLoggedIn && <li><Link className="nav-link" to="/verwalten/Lehrer"><FaUniversity /> Lehrer</Link></li>}
                         {isUserLoggedIn && <li><Link className="nav-link" to="/verwalten/Sekretariat"><FaUniversity /> Sekretariat</Link></li>}
                         {isUserLoggedIn && <li><Link className="nav-link" to="/verwalten/alle"><FaUniversity /> Nutzer Verwalten</Link></li>}
@@ -39,14 +70,39 @@ class DynamicHeaderComponent extends Component {
                 case 'secretary':
                     navItems =
                         <ul className="navbar-nav">
-                            {approved && <li><Link className="nav-link" to="/Wellcome/ali"><FaHome /> Start</Link></li>}
-                            {approved && <li><Link className="nav-link" to="/termine"><FaUniversity /> Lehrer</Link></li>}
-                            {approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Eltern</Link></li>}
-                            {approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to={"/Wellcome/"+ sessionStorage.getItem('id')}><FaHome /> Start</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to="/verwalten/Lernende"><FaUniversity /> Lernende</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to="/verwalten/Eltern"><FaCalendarAlt /> Eltern</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to="/Klassen"><FaCalendarAlt /> Klassen</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
+                        </ul>
+                    break;
+                case 'parent':
+                    navItems =
+                        <ul className="navbar-nav">
+                            {this.state.approved && <li><Link className="nav-link" to={"/Wellcome/"+ sessionStorage.getItem('id')}><FaHome /> Start</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to="/verwalten/Lernende"><FaUniversity /> Meine Kinder</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
+                        </ul>
+                    break;
+                    case 'teacher':
+                    navItems =
+                        <ul className="navbar-nav">
+                            {this.state.approved && <li><Link className="nav-link" to={"/Wellcome/"+ sessionStorage.getItem('id')}><FaHome /> Start</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to="/verwalten/Lernende"><FaUniversity /> Meine Klassen</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
+                        </ul>
+                    break;
+                    case 'student':
+                    navItems =
+                        <ul className="navbar-nav">
+                            {this.state.approved && <li><Link className="nav-link" to={"/Wellcome/"+ sessionStorage.getItem('id')}><FaHome /> Start</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to="/verwalten/Lernende"><FaUniversity /> Meine Klasse</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
                         </ul>
                     break;
             }
-
+                    
         }
 
 

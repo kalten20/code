@@ -81,6 +81,39 @@ public class UserService {
         }
     }
 
+    public void changeTo(User toEdit, User editedUser) {
+        if (editedUser != null) {
+            if(editedUser.getFirstName() != null) {
+                toEdit.setFirstName(editedUser.getFirstName());
+            }
+            if(editedUser.getLastName() != null) {
+                toEdit.setLastName(editedUser.getLastName());
+            }
+            if(editedUser.getEmail() != null) {
+                toEdit.setEmail(editedUser.getEmail());
+            }
+            if(editedUser.getBirthDate() != null) {
+                toEdit.setBirthDate(editedUser.getBirthDate());
+            }
+            if(editedUser.getPassword() != null) {
+                toEdit.setPassword(editedUser.getPassword());
+            }
+
+        }
+    }
+
+    public List<String> getExistingEmailsByRole(String role) {
+        List<String> existingEmails = new ArrayList<>();
+        List<User> existingUsers = userRepository.findAllByRole(role);
+        if(!existingUsers.isEmpty()) {
+            for(User user: existingUsers) {
+                existingEmails.add(user.getEmail());
+            }
+        }
+                return existingEmails;
+    }
+
+
 }
 
 

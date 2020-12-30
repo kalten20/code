@@ -5,103 +5,74 @@ import * as Yup from 'yup';
 
 import UserDataService from '../../api/UserDataService.js'
 import axios from 'axios';
-import classes from '../UserBuilder/User.module.css';
+import Button from '../../Button/Button'
 
 
+class ProfileForm extends Component { 
 
-
-class SignInFormValidations extends Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            role : 'admin',
-            bithDate: moment(new Date()).format('YYYY-MM-DD'),
-            usedEmails : []
-        }
-    }
-
-    componentDidMount() {
-        let usedEmails = []
-        axios.get(`http://localhost:8080/users/existingEmails`)
-        .then(response => {
-            console.log(response.data)
-            usedEmails = response.data
-            this.setState({usedEmails : usedEmails})
-        })
-        .catch(err => {
-            console.log(err)
-        })
-
-
-    }
-
-    onSubmit=(values)=> {
-         
-        let role = values.role
-        let user = {
+   onSubmit =(values) => {
+        
+        let targetId = this.props.user.id
+        let updatedUser = {
+            id: this.props.user.id,
             firstName : values.firstName,
             lastName : values.lastName,
             email : values.email,
             password : values.password,
-            role : values.role,
+            role : this.props.user.role,
             birthDate: values.birthDate
         }
-        console.log(user);
-
-        UserDataService.createUser(user, role)
+        UserDataService.updateUser(targetId, updatedUser)
         .then(() => { 
-            this.props.history.push(`/login`)
+            this.props.updateUser(updatedUser)
+            console.log(updatedUser)
+            //this.props.history.push(`/login`)
         })
         .catch(err => {
             //Handle your error here
             console.log(err.response);
         })
-        
+
     }
 
-    validate= (values) => {
-         let errors = {}
-        
-        if(values.password !== values.repeatPassword) {
-            errors.repeatPassword = 'Passworte stimmen nicht überein'
-        }
-        return errors;
-    }
     
 
-    render() {
 
-        let { firstName, lastName, email, password,role, bithDate } = this.state
-
-        let usedEmails = this.state.usedEmails
+    render () {
+        
+        let firstName = this.props.user.firstName; let lastName = this.props.user.lastName; let email = this.props.user.email; let birthDate = this.props.user.birthDate;
+        let oldData = {
+            firstName : firstName,
+            lastName : lastName, email : email, birthDate : birthDate
+        }
+        console.log(oldData)
+        let usedEmails = this.props.usedEmails;
         let minDate = new Date();
-        console.log(minDate)
         minDate.setFullYear(minDate.getFullYear() - 10);
-        console.log(minDate)
 
 
 
 
-        return (
-            <div className={classes.User} >
-                <h1>Registrieren</h1>
 
-                <div className="container">
-                    <Formik
+
+    
+
+    
+
+        return ( 
+            <div>
+                
+               
+                <Formik
                     initialValues={{ 
                         firstName : firstName,
                         lastName : lastName,
                     
                         email : email,
-                        password : password,
+                        password : '',
                         repeatPassword : '',
-                        role : role,
-                        bithDate : bithDate
+                        
+                        birthDate : birthDate
                     }}
                     initialTouched={{ 
                         field: true,
@@ -131,20 +102,22 @@ class SignInFormValidations extends Component {
                             .notOneOf(usedEmails, 'Email Adresse schon vergeben')
                             ,
     
-                            password : Yup.string()
-                            .required("Bitte Password eintragen")
+                            password : Yup.string("bitte gultiges password eingeben")
+                            
                             .min(8, "Password zu kurz, mindestens 8 Zeichen!")
-                            .matches(/(?=.*[0-9])/,"Passwort muss mindest eine Ziffer enthalten "),
-
-                            repeatPassword : Yup.string().required("Bitte Passwort wiederholen")
-                            // .test('repeatedPasswordTest', 'Password nicht korrekt wiederholt',
-                            // value => {
-                                
-                            //     return false
-                            // })
-
-                            //OR TO TEST REPEAT PASSWORD :   .oneOf([Yup.ref('password')])
+                            .matches(/(?=.*[0-9])/,"Passwort muss mindest eine Ziffer enthalten ")
                             ,
+
+                            repeatPassword : Yup.string()
+                            .oneOf([Yup.ref('password')],'Passwort stimmt nicht'),
+                            // // .test('repeatedPasswordTest', 'Password nicht korrekt wiederholt',
+                            // // value => {
+                                
+                            // //     return false
+                            // // })
+
+                            // //OR TO TEST REPEAT PASSWORD :   .oneOf([Yup.ref('password')])
+                            // ,
                             birthDate : Yup.date().required("Bitte Geburtsdatum eingeben")
                             .max(minDate, 'Benuter muss mindestens 10 Jahre Alt sein')
                             
@@ -168,7 +141,6 @@ class SignInFormValidations extends Component {
                                     handleBlur,
                                     handleSubmit
                                 } = props;
-
                                 return (
                                     <Form >
 
@@ -189,48 +161,39 @@ class SignInFormValidations extends Component {
                                     <ErrorMessage name="email" component="small" className="form-text text-danger"></ErrorMessage>
                                 </fieldset>
                                 <fieldset className="form-group">
-                                    <label>Passwort</label>
-                                    <Field className="form-control" type="password" name="password" placeholder="*********" />
-                                    <ErrorMessage name="password" component="small" className="form-text text-danger"></ErrorMessage>
-                                </fieldset>
-                                <fieldset className="form-group">
-                                    <label>Passwort Wiederholen</label>
-                                    <Field className="form-control" type="password" name="repeatPassword" />
-                                    <ErrorMessage name="repeatPassword" component="small" className="form-text text-danger"></ErrorMessage>
-                                </fieldset>
-                                <fieldset className="form-group">
                                     <label>Geburtsdatum</label>
                                     <Field className="form-control" type="date" name="birthDate" />
                                     <ErrorMessage name="birthDate" component="small" className="form-text text-danger"></ErrorMessage>
                                 </fieldset>
                                 <fieldset className="form-group">
-                                    <label>Rolle</label>
-                                    <Field className="form-control" as="select" name="role">
-                                    <option key="admin" value="admin">admin</option>
-                                    <option key ="secretary" value="secretary">sekretariat</option>
-                                    <option key="teacher" value="teacher">lehrer</option>
-                                    <option key = "student" value="student">Lernender</option>
-                                    <option key = "parent" value="parent">Eltern</option>
-                                    </Field>
-                                    <ErrorMessage name="role" component="div" className="alert alert-warning"></ErrorMessage>
+                                    <label>Neues Passwort</label>
+                                    <Field className="form-control" type="password" name="password" placeholder="*********" />
+                                    <ErrorMessage name="password" component="small" className="form-text text-danger"></ErrorMessage>
                                 </fieldset>
-                                <button type="submit" className="btn btn-success"
-                                disabled={errors.firstName || errors.lastName ||errors.email ||errors.password ||errors.repeatPassword|| errors.birthDate  } 
-                                >save
-                                </button>
-                            </Form>)
+                                <fieldset className="form-group">
+                                    <label>Neues Passwort Wiederholen</label>
+                                    <Field className="form-control" type="password" name="repeatPassword" />
+                                    <ErrorMessage name="repeatPassword" component="small" className="form-text text-danger"></ErrorMessage>
+                                </fieldset>
+
+                                <Button action="submit" btnType="Success" >Speichern</Button>
+
+                                </Form>)
 
                             }
                             
                         }
                     </Formik>
+                
+                
+  
 
-                </div>
+
+
             </div>
         )
-
-
     }
+
 }
 
-export default SignInFormValidations
+export default ProfileForm

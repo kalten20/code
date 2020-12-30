@@ -66,6 +66,11 @@ public class UserResource {
         return userService.getExistingEmails();
     }
 
+    @GetMapping(path = "/{role}/existingEmails")
+    public List<String> getExistingEmailsByRole(@PathVariable String role) {
+        return userService.getExistingEmailsByRole(role);
+    }
+
 
 
     @PostMapping(path = "/{role}/neu")
@@ -91,7 +96,23 @@ public class UserResource {
                     user.getLastName(), user.getEmail(), user.getPassword(),
                     user.getRole(), user.getBirthDate());
             return adminRepository.save(neuAdmin);
+        } else if (role.equals("parent")) {
+            Parent neuParent = new Parent(user.getFirstName(),
+                    user.getLastName(), user.getEmail(), user.getPassword(),
+                    user.getRole(), user.getBirthDate());
+            return adminRepository.save(neuParent);
+
         }
+        //THROW A ROLE NOT FOUND EXCEPTION else
         return null;
+    }
+
+    @PutMapping(path = "/editUser/{id}")
+    public void editUsersMail(@PathVariable long id,
+                              @RequestBody User editedUser){
+        User toEdit = userService.findById(id);
+        userService.changeTo(toEdit, editedUser);
+
+        userJpaRepository.save(toEdit);
     }
 }

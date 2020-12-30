@@ -29,42 +29,33 @@ public class Secretary extends User {
 
     public void setApproved(User user) { user.setApproved(true);}
 
-    public schoolClass createNewClass(String className, int maxParticipants){
-        schoolClass toCreate = new schoolClass(className, maxParticipants);
-        return toCreate;
-    }
 
-    public void changeClassName(schoolClass classToChangeName, String newName){
+
+    public void changeClassName(SchoolClass classToChangeName, String newName){
         classToChangeName.setClassName(newName);
     }
 
-    public void changeMaxParticipants(schoolClass classToChange, int newMaxParticipants){
-        classToChange.setMaxParticipants(newMaxParticipants);
-    }
 
-    public void addStudentToClass(schoolClass schoolClass, Student toAdd){
+
+    public void addStudentToClass(SchoolClass schoolClass, Student toAdd){
         if(!schoolClass.containsStudent(toAdd)) {
             schoolClass.addStudent(toAdd);
         }
     }
 
-    public void removeStudentFromClass(schoolClass schoolClass, Student toRemove){
+    public void removeStudentFromClass(SchoolClass schoolClass, Student toRemove){
         if(schoolClass.containsStudent(toRemove)){
             schoolClass.removeStudent(toRemove);
         }
     }
 
-    public void addTeacherToClass(schoolClass schoolClass, Teacher toAdd){
+    public void addTeacherToClass(SchoolClass schoolClass, Teacher toAdd){
         if(!schoolClass.containsTeacher(toAdd)){
             schoolClass.addTeacher(toAdd);
         }
     }
 
-    public void removeTeacherFromClass(schoolClass schoolClass, Teacher toRemove){
-        if(schoolClass.containsTeacher(toRemove)){
-            schoolClass.removeTeacher(toRemove);
-        }
-    }
+    public void removeTeacherFromClass(SchoolClass schoolClass, Teacher toRemove){
 
     public Announcement createAnnouncement(long id, String sender, List<String> visibility, String subject,
                                            String content, Date date){

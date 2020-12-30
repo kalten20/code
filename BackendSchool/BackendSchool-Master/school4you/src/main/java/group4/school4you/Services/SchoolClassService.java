@@ -1,0 +1,112 @@
+package group4.school4you.Services;
+
+import group4.school4you.Entities.SchoolClass;
+import group4.school4you.Entities.Student;
+import group4.school4you.Entities.Teacher;
+import group4.school4you.Entities.User;
+import group4.school4you.Repositories.SchoolClassRepository;
+import group4.school4you.Repositories.StudentRepository;
+import group4.school4you.Repositories.TeacherRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class SchoolClassService {
+
+    @Autowired
+    private SchoolClassRepository schoolClassRepository;
+
+    @Autowired
+    StudentRepository studentRepository;
+    @Autowired
+    TeacherRepository teacherRepository;
+
+    public List<SchoolClass> findAll() {
+        List<SchoolClass> all = schoolClassRepository.findAll();
+        return all;
+    }
+
+    public SchoolClass findById(long id) {
+        return schoolClassRepository.findById(id).get();
+    }
+
+    public SchoolClass create(String name) {
+        SchoolClass newClass = new SchoolClass(name);
+        return schoolClassRepository.save(newClass);
+    }
+
+    public List<SchoolClass> getAllClasses() {
+        return schoolClassRepository.findAll();
+    }
+
+    public List<String> getAllClassNames() {
+        List<SchoolClass> allClasses = getAllClasses();
+        List<String> allClassNames = new ArrayList<>();
+        for (SchoolClass sc : allClasses) {
+            allClassNames.add(sc.getClassName());
+        }
+        return allClassNames;
+
+    }
+
+
+    public SchoolClass findByName(String targetClassName) {
+        return schoolClassRepository.findByClassName(targetClassName);
+    }
+
+    public User addUserByRoleAndEmail(String role, String email, SchoolClass targetClass) {
+        if (role.equals("student")) {
+            Student addedStudent = (Student) studentRepository.findByEmail(email);
+            if (!targetClass.getStudents().contains(addedStudent)) {
+                targetClass.addStudent(addedStudent);
+                schoolClassRepository.save(targetClass);
+                return addedStudent;
+            } else {
+                //THROW EXCEPTION
+            }
+
+
+        } else if (role.equals("teacher")) {
+            Teacher addedTeacher =
+                    (Teacher)teacherRepository.findByEmail(email);
+            if (!targetClass.getTeachers().contains(addedTeacher)) {
+                targetClass.addTeacher(addedTeacher);
+                schoolClassRepository.save(targetClass);
+                return addedTeacher;
+            } else {
+                //throw Exception
+            }
+        }
+        return null;
+    }
+
+    public User removeUser(String role, Long id, SchoolClass targetClass) {
+        if (role.equals("student")) {
+            User toRemove = studentRepository.findById(id).get();
+            targetClass.removeStudent((Student) toRemove);
+            schoolClassRepository.save(targetClass);
+            return toRemove;
+        } else if (role.equals("teacher")) {
+            User toRemove =teacherRepository.findById(id).get();
+            targetClass.removeTeacher((Teacher) toRemove);
+            schoolClassRepository.save(targetClass);
+            return toRemove;
+        }
+        return null;
+
+    }
+
+    public List<String> getUnavailableStudentEmails () {
+        List<String> unavailableEmails = new ArrayList<>();
+        List<SchoolClass> allClasses = getAllClasses();
+        for(SchoolClass schoolClass : allClasses) {
+            for( User student : schoolClass.getStudents()) {
+                unavailableEmails.add(student.getEmail());
+            }
+        }
+        return unavailableEmails;
+    }
+}

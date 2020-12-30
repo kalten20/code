@@ -54,8 +54,8 @@ class UserBuilder extends Component {
                     console.log(err.response.data.message)
                 })
 
-        } else if (targetRole === 'Lehrenden') {
-            UserDataService.getUsersByRole('students')
+        } else if (targetRole === 'Lernende') {
+            UserDataService.getUsersByRole('student')
                 .then(response => {
                     this.setState({ users: response.data })
                     console.log(this.state.users)
@@ -64,7 +64,7 @@ class UserBuilder extends Component {
                 })
 
         } else if (targetRole === 'Eltern') {
-            UserDataService.getUsersByRole('parents')
+            UserDataService.getUsersByRole('parent')
                 .then(response => {
                     this.setState({ users: response.data })
                     console.log(this.state.users)
