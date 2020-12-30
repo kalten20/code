@@ -16,6 +16,7 @@ public class SecretaryResource {
     private ParentRepository parentRepository;
     private StudentRepository studentRepository;
     private SchoolClassRepository schoolClassRepository;
+    private AnnouncementRepository announcementRepository;
 
     private Secretary secretary;
 
@@ -172,6 +173,7 @@ public class SecretaryResource {
         SchoolClass toEdit = secretaryService.findByName(className);
         User toRemove = userService.findById(studentId);
         secretary.removeStudentFromClass(toEdit, (Student) toRemove);
+        schoolClassRepository.save(toEdit);
     }
 
     /**
@@ -197,6 +199,84 @@ public class SecretaryResource {
         SchoolClass toEdit = secretaryService.findByName(className);
         User toRemove = userService.findById(teacherId);
         secretary.removeTeacherFromClass(toEdit, (Teacher) toRemove);
+    }
+
+
+    //===========================Ankündigungen==============================================
+
+    /**
+     * To get all announcements from the database.
+     * @return A list of all announcements in the database.
+     */
+    @GetMapping(path = "/announcements/getAll")
+    public List<Announcement> getAllAnnouncements(){
+        return announcementRepository.findAll();
+    }
+
+    /**
+     * This method gets all announcements depend on its role. So for example we can get all announcements for students,
+     * all for teachers or all for parents.
+     * @param role The role we want the announcements from.
+     * @return A list of all announcements of the certain role.
+     */
+    @GetMapping(path = "/announcements/getByRole/{role}")
+    public List<Announcement> getAnnouncement(@PathVariable String role){
+        List<Announcement> allAnnouncements = announcementRepository.findAll();
+        List<Announcement> toReturn = null;
+
+        if(role.equals("student")){
+            for(int i = 0; i < allAnnouncements.size(); i++){
+                if(allAnnouncements.get(i).getVisibility().contains("student")){
+                    toReturn.add(allAnnouncements.get(i));
+                }
+            }
+        } if(role.equals("teacher")){
+            for(int i = 0; i < allAnnouncements.size(); i++){
+                if(allAnnouncements.get(i).getVisibility().contains("teacher")){
+                    toReturn.add(allAnnouncements.get(i));
+                }
+            }
+        } if(role.equals("parent")){
+            for(int i = 0; i < allAnnouncements.size(); i++){
+                if(allAnnouncements.get(i).getVisibility().contains("parent")){
+                    toReturn.add(allAnnouncements.get(i));
+                }
+            }
+        }
+        return toReturn;
+    }
+
+    /**
+     * With this method the secretary can create a new announcement.
+     * @param announcement The announement which is saved in the database.
+     */
+    @PostMapping(path = "/announcements/createAnnouncement")
+    public void createAnnouncement(@RequestBody Announcement announcement){
+        announcementRepository.save(secretary.createAnnouncement(announcement.getID(),"Sekretariat",
+                announcement.getVisibility(), announcement.getSubject(), announcement.getContent(),
+                announcement.getDate()));
+    }
+
+    /**
+     * This method helps the secretary to edit an announcement.
+     * @param id    To find the announcement in the database.
+     * @param announcement
+     */
+    @PutMapping(path = "/announcements/editAnnouncement/{id}")
+    public void editAnnouncement(@PathVariable long id, @RequestBody Announcement announcement){
+        Announcement toEdit = announcementRepository.findById(id).get();
+        secretary.editAnnouncement(toEdit, id, announcement.getSender(), announcement.getVisibility(),
+                announcement.getSubject(), announcement.getContent(), announcement.getDate());
+        announcementRepository.save(toEdit);
+    }
+
+    /**
+     * This method deletes an announcement from the database.
+     * @param id To find the announcement.
+     */
+    @DeleteMapping(path = "/announcements/deleteAnnouncement/{id}")
+    public void deleteAnnouncement(@PathVariable long id){
+        announcementRepository.deleteById(id);
     }
 }
 

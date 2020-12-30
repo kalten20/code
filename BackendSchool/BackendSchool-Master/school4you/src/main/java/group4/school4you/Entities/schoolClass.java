@@ -16,6 +16,10 @@ public class SchoolClass {
         @ManyToMany
         private  List<Teacher> teachers;
 
+        @OneToMany
+        private List<Student> students;
+        @OneToMany
+        private List<Teacher> teachers;
 
 
     public SchoolClass( ){}

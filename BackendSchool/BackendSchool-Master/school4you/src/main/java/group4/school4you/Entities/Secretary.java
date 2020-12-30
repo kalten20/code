@@ -3,6 +3,8 @@ package group4.school4you.Entities;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -55,5 +57,18 @@ public class Secretary extends User {
 
     public void removeTeacherFromClass(SchoolClass schoolClass, Teacher toRemove){
 
+    public Announcement createAnnouncement(long id, String sender, List<String> visibility, String subject,
+                                           String content, Date date){
+        Announcement created = new Announcement(id, sender, visibility, subject, content, date);
+        return created;
+    }
+
+    public void editAnnouncement(Announcement toEdit, long id, String sender, List<String> visibility, String subject,
+                                 String content, Date date){
+        toEdit.setSender(sender);
+        toEdit.setVisibility(visibility);
+        toEdit.setSubject(subject);
+        toEdit.setContent(content);
+        toEdit.setDate(date);
     }
 }
