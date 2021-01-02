@@ -85,4 +85,67 @@ public class TeacherResource {
         Teacher teacher = (Teacher) userService.findById(id);
         teacher.createSickNote(id, sickNote.getDate(), teacher.getEmail(), teacher.getRole());
     }
+
+
+    @GetMapping(path = "/teacher/announcements/getAll/{teacherId}")
+    public List<Announcement> getAnnouncements(@PathVariable long id){
+        List<Announcement> allAnnouncements = announcementRepository.findAll();
+        List<Announcement> allAnnouncementsForThisTeacher = null;
+        List<schoolClass> allClasses = schoolClassRepository.findAll();
+        List<schoolClass> classesOfTeacher = null;
+
+        Teacher teacher = (Teacher) userService.findById(id);
+
+        //Es werden alle Klassen des Lehrers herausgesucht
+        for(int i = 0; i < allClasses.size(); i++){
+            if(allClasses.get(i).containsTeacher(teacher)){
+                classesOfTeacher.add(allClasses.get(i));
+            }
+        }
+        //Es werden alle ankündigungen durchsucht und die, die für lehrer sichtbar sind, in die liste für den Lehrer
+        //hinzugefügt
+        for(int i = 0; i < allAnnouncements.size(); i++){
+            if(allAnnouncements.get(i).getVisibility().contains("teacher")){
+                allAnnouncementsForThisTeacher.add(allAnnouncements.get(i));
+            }
+        }
+
+        //es werden alle klassen des lehrers durchlaufen und die klassen ankündiungen herausgezogen -> diese werden dann
+        //in die liste für den lehrer hinzugefügt
+        for(int i = 0; i < classesOfTeacher.size(); i++){
+            List<Announcement> classAnnouncements = classesOfTeacher.get(i).getClassesAnnouncements();
+            for(int j = 0; j < classAnnouncements.size(); j++){
+                allAnnouncementsForThisTeacher.add(classAnnouncements.get(j));
+            }
+        }
+
+        return allAnnouncementsForThisTeacher;
+
+
+    }
+
+
+
+    /**
+     * With this method the teacher can create a new announcement for a certain class. This is the main difference to the
+     * secretary announcement. The secretary can create an announcement for a certain role. The teacher can create an
+     * announcement for a certain class.
+     * @param announcement The announcement which is saved in the database.
+     */
+    @PostMapping(path = "/teacher/announcements/createAnnouncement/{teacherId}")
+    public void createAnnouncement(@PathVariable long id, @RequestBody Announcement announcement){
+        Teacher teacher = (Teacher) userService.findById(id);
+
+        //Lehrer erstellt neue Ankündigung
+        Announcement newAnnouncement = teacher.createAnnouncement(teacher.getFirstName()+" "+teacher.getLastName(),
+                announcement.getVisibility(), announcement.getSubject(), announcement.getContent(), announcement.getDate(),
+                announcement.getClassID());
+        //Announcement wird im repository gespeichert mit entsprechender classID
+        announcementRepository.save(newAnnouncement);
+
+        //Entsprechende Klasse bekommt announcement noch in ihre liste hinzugefügt -> zum anzeigen um einiges leichter
+        schoolClass toEdit = schoolClassRepository.findById(announcement.getClassID()).get();
+        toEdit.addAnnouncement(newAnnouncement);
+        schoolClassRepository.save(toEdit);
+    }
 }

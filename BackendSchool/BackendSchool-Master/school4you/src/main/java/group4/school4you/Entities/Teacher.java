@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
@@ -29,5 +30,11 @@ public class Teacher extends User {
     public SickNote createSickNote(long userId, Date date, String email, String role){
         SickNote sickNote = new SickNote(userId, date, email, role);
         return sickNote;
+    }
+
+    public Announcement createAnnouncement(String sender, List<String> visibility, String subject,
+                                           String content, Date date, long classId){
+        Announcement created = new Announcement(sender, visibility, subject, content, date, classId);
+        return created;
     }
 }

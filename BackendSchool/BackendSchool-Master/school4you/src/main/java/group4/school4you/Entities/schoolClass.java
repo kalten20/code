@@ -18,7 +18,30 @@ public class schoolClass {
         @OneToMany
         private List<Teacher> teachers;
 
+        //eine klasse bekommt noch eine liste von ankündigungen -> so kann für bestimmte klassen eine ankündigung
+        //erstellt werden
 
+        private List<Announcement> classesAnnouncements;
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
+    }
+
+    public List<Announcement> getClassesAnnouncements() {
+        return classesAnnouncements;
+    }
+
+    public void setClassesAnnouncements(List<Announcement> classesAnnouncements) {
+        this.classesAnnouncements = classesAnnouncements;
+    }
+
+    public void addAnnouncement(Announcement announcement){
+        this.classesAnnouncements.add(announcement);
+    }
 
     public schoolClass( ){}
         public schoolClass(String name, int maxPart){
