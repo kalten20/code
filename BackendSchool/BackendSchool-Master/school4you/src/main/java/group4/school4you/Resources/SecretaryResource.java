@@ -210,7 +210,7 @@ public class SecretaryResource {
      * To get all announcements from the database.
      * @return A list of all announcements in the database.
      */
-    @GetMapping(path = "/announcements/getAll")
+    @GetMapping(path = "/secretary/announcements/getAll")
     public List<Announcement> getAllAnnouncements(){
         return announcementRepository.findAll();
     }
@@ -221,7 +221,7 @@ public class SecretaryResource {
      * @param role The role we want the announcements from.
      * @return A list of all announcements of the certain role.
      */
-    @GetMapping(path = "/announcements/getByRole/{role}")
+    @GetMapping(path = "/secretary/announcements/getByRole/{role}")
     public List<Announcement> getAnnouncement(@PathVariable String role){
         List<Announcement> allAnnouncements = announcementRepository.findAll();
         List<Announcement> toReturn = null;
@@ -250,11 +250,11 @@ public class SecretaryResource {
 
     /**
      * With this method the secretary can create a new announcement.
-     * @param announcement The announement which is saved in the database.
+     * @param announcement The announcement which is saved in the database.
      */
-    @PostMapping(path = "/announcements/createAnnouncement")
+    @PostMapping(path = "/secretary/announcements/createAnnouncement")
     public void createAnnouncement(@RequestBody Announcement announcement){
-        announcementRepository.save(secretary.createAnnouncement(announcement.getID(),"Sekretariat",
+        announcementRepository.save(secretary.createAnnouncement("Sekretariat",
                 announcement.getVisibility(), announcement.getSubject(), announcement.getContent(),
                 announcement.getDate()));
     }
@@ -264,7 +264,7 @@ public class SecretaryResource {
      * @param id    To find the announcement in the database.
      * @param announcement
      */
-    @PutMapping(path = "/announcements/editAnnouncement/{id}")
+    @PutMapping(path = "/secretary/announcements/editAnnouncement/{id}")
     public void editAnnouncement(@PathVariable long id, @RequestBody Announcement announcement){
         Announcement toEdit = announcementRepository.findById(id).get();
         secretary.editAnnouncement(toEdit, id, announcement.getSender(), announcement.getVisibility(),
@@ -276,7 +276,7 @@ public class SecretaryResource {
      * This method deletes an announcement from the database.
      * @param id To find the announcement.
      */
-    @DeleteMapping(path = "/announcements/deleteAnnouncement/{id}")
+    @DeleteMapping(path = "/secretary/announcements/deleteAnnouncement/{id}")
     public void deleteAnnouncement(@PathVariable long id){
         announcementRepository.deleteById(id);
     }

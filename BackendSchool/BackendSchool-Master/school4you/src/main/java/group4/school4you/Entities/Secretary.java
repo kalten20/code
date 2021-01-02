@@ -66,9 +66,9 @@ public class Secretary extends User {
         }
     }
 
-    public Announcement createAnnouncement(long id, String sender, List<String> visibility, String subject,
+    public Announcement createAnnouncement(String sender, List<String> visibility, String subject,
                                            String content, Date date){
-        Announcement created = new Announcement(id, sender, visibility, subject, content, date);
+        Announcement created = new Announcement(sender, visibility, subject, content, date);
         return created;
     }
 

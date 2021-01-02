@@ -11,16 +11,18 @@ public class Announcement {
     private long ID;
     private String sender;
     //sichtbarkeit hier so gemeint: "empfänger" / wer kann die Ankündigung sehen
-    //array, weil mehrere rollen evtl sehen können -> zu enum noch ändern? generell rolle zu
+    //liste, weil mehrere rollen evtl sehen können -> zu enum noch ändern? generell rolle zu
     //enum ändern? -> mit ali reden!!
     private List<String> visibility;
     private String subject;
     private String content;
     private Date date;
 
-    public Announcement(long id, String sender, List<String> visibility, String subject, String content
+    private long classID;
+
+
+    public Announcement(String sender, List<String> visibility, String subject, String content
     , Date date){
-        this.ID = id;
         this.sender = sender;
         this.visibility = visibility;
         this.subject = subject;
@@ -28,7 +30,25 @@ public class Announcement {
         this.date = date;
     }
 
-    public long getID() {
+    public long getClassID() {
+        return classID;
+    }
+
+    public void setClassID(long classID) {
+        this.classID = classID;
+    }
+
+    public Announcement(String sender, List<String> visibility, String subject, String content
+            , Date date, long classID){
+        this.sender = sender;
+        this.visibility = visibility;
+        this.subject = subject;
+        this.content = content;
+        this.date = date;
+        this.classID = classID;
+    }
+
+        public long getID() {
         return ID;
     }
 
