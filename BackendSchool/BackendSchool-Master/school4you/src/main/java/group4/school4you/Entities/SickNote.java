@@ -11,14 +11,32 @@ public class SickNote {
     private long userId;
     private Date date;
     private String email;
+    private String content;
     private String role;
     private boolean isApproved = false;
 
-    public SickNote(long userId, Date date, String email, String role){
+    public SickNote(long userId, Date date, String email,String content, String role){
         this.userId = userId;
         this.date = date;
         this.email = email;
+        this.content = content;
         this.role = role;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public boolean isApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(boolean approved) {
+        isApproved = approved;
     }
 
     public long getId() {
