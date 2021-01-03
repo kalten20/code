@@ -27,8 +27,8 @@ public class Teacher extends User {
         toEdit.setDescription(description);
     }
 
-    public SickNote createSickNote(long userId, Date date, String email, String role){
-        SickNote sickNote = new SickNote(userId, date, email, role);
+    public SickNote createSickNote(long userId, Date date, String email, String content, String role){
+        SickNote sickNote = new SickNote(userId, date, email,content, role);
         return sickNote;
     }
 

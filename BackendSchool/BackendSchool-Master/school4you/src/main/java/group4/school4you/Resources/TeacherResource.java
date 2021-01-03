@@ -20,6 +20,7 @@ public class TeacherResource {
     private UserJpaRepository userRepository;
     private AnnouncementRepository announcementRepository;
     private schoolClassRepository schoolClassRepository;
+    private SickNoteRepository sickNoteRepository;
     private ExamRepository examRepository;
     private UserService userService;
     private Teacher teacherToWorkWith;
@@ -83,7 +84,8 @@ public class TeacherResource {
     @PostMapping(path = "/teacher/sickNote/{teacherId}")
     public void createSickNote(@PathVariable long id, @RequestBody SickNote sickNote){
         Teacher teacher = (Teacher) userService.findById(id);
-        teacher.createSickNote(id, sickNote.getDate(), teacher.getEmail(), teacher.getRole());
+        sickNoteRepository.save(teacher.createSickNote(id, sickNote.getDate(), teacher.getEmail(), sickNote.getContent(),
+                teacher.getRole()));
     }
 
 
