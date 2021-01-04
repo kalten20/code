@@ -20,4 +20,5 @@ public class Teacher extends User {
         super(firstName,lastName,email,password,role,birthDate);
         this.classes = new ArrayList<>();
     }
+
 }

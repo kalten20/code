@@ -1,12 +1,7 @@
 package group4.school4you.Services;
 
-import group4.school4you.Entities.SchoolClass;
-import group4.school4you.Entities.Student;
-import group4.school4you.Entities.Teacher;
-import group4.school4you.Entities.User;
-import group4.school4you.Repositories.SchoolClassRepository;
-import group4.school4you.Repositories.StudentRepository;
-import group4.school4you.Repositories.TeacherRepository;
+import group4.school4you.Entities.*;
+import group4.school4you.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +13,9 @@ public class SchoolClassService {
 
     @Autowired
     private SchoolClassRepository schoolClassRepository;
+    @Autowired
+    private InboxRepository inboxRepository;
+
 
     @Autowired
     StudentRepository studentRepository;
@@ -35,6 +33,10 @@ public class SchoolClassService {
 
     public SchoolClass create(String name) {
         SchoolClass newClass = new SchoolClass(name);
+        SchoolClassInbox inbox = new SchoolClassInbox(newClass.getId());
+        inboxRepository.save(inbox);
+        newClass.setInboxId(inbox.getId());
+
         return schoolClassRepository.save(newClass);
     }
 

@@ -9,12 +9,14 @@ import java.util.List;
 public class SchoolClass {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
         private String className;
         @OneToMany
         private List<Student> students;
         @ManyToMany
         private  List<Teacher> teachers;
+
+        private Long inboxId;
 
 
 
@@ -25,10 +27,10 @@ public class SchoolClass {
             teachers = new ArrayList<>();
         }
 
-        public int getId(){
+        public Long getId(){
             return this.id;
         }
-        public void setId(int Id){
+        public void setId(Long Id){
             this.id = Id;
         }
         public String getClassName(){
@@ -65,7 +67,8 @@ public class SchoolClass {
         }
 
         public void addTeacher(Teacher toAdd){
-            this.teachers.add(toAdd);
+        this.teachers.add(toAdd);
+
         }
 
         public void removeTeacher(Teacher toRemove){
@@ -73,6 +76,14 @@ public class SchoolClass {
             this.teachers.remove(toRemove);
         }
         }
+
+    public Long getInboxId() {
+        return inboxId;
+    }
+
+    public void setInboxId(Long inboxId) {
+        this.inboxId = inboxId;
+    }
 }
 
 

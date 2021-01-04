@@ -22,6 +22,8 @@ import SchoolClass from '../ClassBuilder/SchoolClass'
 import SchoolClasses from '../ClassBuilder/SchoolClasses'
 import Planer from '../Planer/Planer'
 import classes from '../../Styles.module.css'
+import AnnouncementForm from '../AnnouncementsBuilder/AnnouncementForm'
+import Inbox from '../AnnouncementsBuilder/Inbox'
 
 
 
@@ -95,6 +97,8 @@ class TodoApp extends Component {
 
                         <AuthenticatedRoute path="/Klassen" component={SchoolClasses} />
                         <AuthenticatedRoute path="/Klasse" component={SchoolClass} />
+                        <AuthenticatedRoute path="/Ankundigungen/erstellen" component={AnnouncementForm} />
+                        <AuthenticatedRoute path="/inbox/:role" component={Inbox} />
 
                         <AuthenticatedRoute path="/logout" component={LogoutComponent} />
                         <Route component={ErrorComponent} />

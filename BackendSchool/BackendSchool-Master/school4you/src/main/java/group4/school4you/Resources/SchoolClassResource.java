@@ -18,7 +18,7 @@ public class SchoolClassResource {
     private SchoolClassService schoolClassService;
 
     @PostMapping(path = "/schoolClass/new/{name}")
-    public SchoolClass createUser(@PathVariable String name ) {
+    public SchoolClass createClass(@PathVariable String name ) {
         //HIER THROW PARSING EXCEPTION
         return schoolClassService.create(name);
     }
