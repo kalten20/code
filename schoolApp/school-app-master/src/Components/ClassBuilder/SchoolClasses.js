@@ -88,7 +88,7 @@ class SchoolClasses extends Component {
             <div class="input-group">
 
             </div>
-            <button class="btn btn-outline-secondary btn-lg" type="submit" onSubmit={this.submit}>Weiter</button>
+            <button  class="btn btn-warning btn-primary btn-sm" type="submit" onSubmit={this.submit}>Weiter</button>
 
         </form>
 
@@ -101,44 +101,74 @@ class SchoolClasses extends Component {
             </h3>
         } else {
             schoolClasses =
-                <div>
-                    {
-                        this.state.existingClasses.map((className, index) => {
-                            return (
-
-                                <div className={classes.SchoolClass}>
-
-                                    <div class="jumbotron jumbotron-fluid">
-                                        <div class="container">
-                                            <h1 class="display-3">{className}</h1>
-                                            <p class="lead">Etwas schreiben</p>
-                                            <Link to={{
+            this.state.existingClasses.map((className, index) => {
+                return (
+                    <li key={index} class="list-group-item">
+                        <h3> {className}</h3> 
+                        <Link to={{
                                                 pathname: '/Klassen/anzeigen/' + className
                                             }
                                             }>
-                                                <Button btnType="Success"> Anzeigen </Button>
+                        <button type="button" class="btn-dark btn-primary btn-sm"
+                        //  onClick={()=>this.selectClass(myClass.id)}
+                         >
+                             Anzeigen
+
+                         </button>
                                             </Link>
-                                        </div>
-                                    </div>
-                                </div>
+
+                            
+                            
+                        </li>
+                )
+            })
+                              
+                               
+
+            
+            
+            // schoolClasses =
+            //     <div>
+            //         {
+            //             this.state.existingClasses.map((className, index) => {
+            //                 return (
+
+            //                     <div className={classes.SchoolClass}>
+
+            //                         <div class="jumbotron jumbotron-fluid">
+            //                             <div class="container">
+            //                                 <h1 class="display-3">{className}</h1>
+            //                                 <p class="lead">Etwas schreiben</p>
+            //                                 <Link to={{
+            //                                     pathname: '/Klassen/anzeigen/' + className
+            //                                 }
+            //                                 }>
+            //                                     <Button btnType="Success"> Anzeigen </Button>
+            //                                 </Link>
+            //                             </div>
+            //                         </div>
+            //                     </div>
 
 
-                            )
-                        })
-                    }
-                </div>
+            //                 )
+            //             })
+            //         }
+            //     </div>
 
 
         }
 
         return (
 
-            <div className={classes.SchoolClasses}>
+            <div className="card">
+                <div class="card-body">
+  <h3 class="card-title">Klassen</h3>
 
-                <button class="btn btn-outline-secondary btn-lg" role="button" onClick={this.toggleForm}>Erstellen</button>
+                <button type="button" class="btn btn-warning btn-primary btn-sm" role="button" onClick={this.toggleForm}>Erstellen</button>
                 {this.state.showForm && form}
 
                 {schoolClasses}
+                </div>
 
 
 

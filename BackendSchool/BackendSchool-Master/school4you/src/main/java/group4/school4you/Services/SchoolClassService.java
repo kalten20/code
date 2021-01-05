@@ -15,6 +15,8 @@ public class SchoolClassService {
     private SchoolClassRepository schoolClassRepository;
     @Autowired
     private InboxRepository inboxRepository;
+    @Autowired
+    private SchoolClassAnnouncementRepository schoolClassAnnouncementRepository;
 
 
     @Autowired
@@ -27,8 +29,15 @@ public class SchoolClassService {
         return all;
     }
 
-    public SchoolClass findById(long id) {
+    public SchoolClass findById(Long id) {
         return schoolClassRepository.findById(id).get();
+    }
+
+    public Teacher findTeacherById (Long id) {
+        return (Teacher) teacherRepository.findById(id).get();
+    }
+    public Student findStudentById (Long id) {
+        return (Student) studentRepository.findById(id).get();
     }
 
     public SchoolClass create(String name) {
@@ -110,5 +119,30 @@ public class SchoolClassService {
             }
         }
         return unavailableEmails;
+    }
+
+    public SchoolClassAnnouncement createClassAnnouncement(
+            SchoolClassAnnouncement newAnnouncement) {
+        System.out.println(newAnnouncement);
+        return schoolClassAnnouncementRepository.save(newAnnouncement);
+    }
+
+    public List<SchoolClassAnnouncement> getAllClassAnnouncements (Long classId) {
+        System.out.println(classId);
+        return schoolClassAnnouncementRepository.findAllByClassId(classId);
+
+    }
+
+    public SchoolClassAnnouncement editClassAnnouncement(Long announcementId,
+                                                         SchoolClassAnnouncement newData) {
+        SchoolClassAnnouncement oldData =
+                schoolClassAnnouncementRepository.findById(announcementId).get();
+        oldData.setSubject(newData.getSubject());
+        oldData.setContent(newData.getContent());
+        return schoolClassAnnouncementRepository.save(oldData);
+    }
+
+    public void deleteClassAnnouncement(Long announcementId) {
+        schoolClassAnnouncementRepository.deleteById(announcementId);
     }
 }

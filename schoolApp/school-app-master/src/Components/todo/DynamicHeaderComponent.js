@@ -83,7 +83,10 @@ class DynamicHeaderComponent extends Component {
                             <div class="dropdown-menu">
                             <Link className="dropdown-item" to="/inbox/SECRETARY"><FaUniversity /> Secretariat</Link>
                             <Link 
-                            to={{ pathname: '/inbox/TEACHER'}}
+                            to={{ pathname: '/inbox/TEACHER',
+                             state : {
+                                imposeRefresh : true
+                              }}}
                             className="dropdown-item" 
                             // to="/inbox/TEACHER"
                             ><FaUniversity /> Lehrende</Link>
@@ -111,7 +114,7 @@ class DynamicHeaderComponent extends Component {
                     navItems =
                         <ul className="navbar-nav nav-tabs">
                             {this.state.approved && <li><Link className="nav-link" to={"/Wellcome/" + sessionStorage.getItem('id')}><FaHome /> Start</Link></li>}
-                            {this.state.approved && <li><Link className="nav-link" to="/verwalten/Lernende"><FaUniversity /> Meine Klassen</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to={"/Meine_Klassen/" + sessionStorage.getItem('id')}><FaUniversity /> Meine Klassen</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to={"/inbox/" + sessionStorage.getItem('role').toUpperCase()}><FaUniversity /> Inbox</Link></li>}
 
@@ -121,7 +124,7 @@ class DynamicHeaderComponent extends Component {
                     navItems =
                         <ul className="navbar-nav nav-tabs">
                             {this.state.approved && <li><Link className="nav-link" to={"/Wellcome/" + sessionStorage.getItem('id')}><FaHome /> Start</Link></li>}
-                            {this.state.approved && <li><Link className="nav-link" to="/verwalten/Lernende"><FaUniversity /> Meine Klasse</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to={"/Meine_Klassen/" + sessionStorage.getItem('id')}><FaUniversity /> Meine Klasse</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to={"/inbox/" + sessionStorage.getItem('role').toUpperCase()}><FaUniversity /> Inbox</Link></li>}
 

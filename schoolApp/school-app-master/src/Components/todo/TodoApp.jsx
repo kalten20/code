@@ -24,6 +24,8 @@ import Planer from '../Planer/Planer'
 import classes from '../../Styles.module.css'
 import AnnouncementForm from '../AnnouncementsBuilder/AnnouncementForm'
 import Inbox from '../AnnouncementsBuilder/Inbox'
+import MyClasses from '../ClassBuilder/MyClasses'
+import MyClass from '../ClassBuilder/MyClass'
 
 
 
@@ -56,12 +58,12 @@ class TodoApp extends Component {
 
     }
 
-    componentDidUpdate() {
-        console.log('MAIN PAGE UPDATED')
+    // componentDidUpdate() {
+    //     console.log('MAIN PAGE UPDATED')
 
 
 
-    }
+    // }
     render() {
 
 
@@ -96,6 +98,9 @@ class TodoApp extends Component {
                         <AuthenticatedRoute path="/Klassen/anzeigen/:name" component={SchoolClass} />
 
                         <AuthenticatedRoute path="/Klassen" component={SchoolClasses} />
+                        <AuthenticatedRoute path="/Meine_Klassen/:id" component={MyClasses} />
+                        <AuthenticatedRoute path="/Meine_Klasse/:classId" component={MyClass} />
+
                         <AuthenticatedRoute path="/Klasse" component={SchoolClass} />
                         <AuthenticatedRoute path="/Ankundigungen/erstellen" component={AnnouncementForm} />
                         <AuthenticatedRoute path="/inbox/:role" component={Inbox} />

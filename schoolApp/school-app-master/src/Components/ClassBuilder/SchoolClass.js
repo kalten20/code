@@ -39,6 +39,7 @@ class SchoolClass extends Component {
                 teachers : response.data.teachers,
                 students : response.data.students
             })
+            console.log(response.data)
             this.populatePossibleValues(response.data);
         })
         .catch(error=> {
@@ -67,10 +68,14 @@ class SchoolClass extends Component {
 
         //EMails of teachers that are in this class already
         let classTeacherEmails = []
-    teachers.forEach(element => {
-        classTeacherEmails.push(element.email)
-        });
-        this.setState({classTeacherEmails : classTeacherEmails})
+        if(teachers) {
+            teachers.forEach(element => {
+                classTeacherEmails.push(element.email)
+                });
+                this.setState({classTeacherEmails : classTeacherEmails})
+
+        }
+    
     }
 
 
@@ -93,10 +98,13 @@ class SchoolClass extends Component {
 
         //Students mails that are is this class
         let classStudentEmails = []
-    students.forEach(element => {
-        classStudentEmails.push(element.email)
-        });
-        this.setState({classStudentEmails : classStudentEmails})
+        if(students) {
+            students.forEach(element => {
+                classStudentEmails.push(element.email)
+                });
+                this.setState({classStudentEmails : classStudentEmails})
+        }
+    
 
 
     }
@@ -242,6 +250,7 @@ class SchoolClass extends Component {
                         </thead>
                         <tbody>
                             {
+                                this.state.teachers &&
                                 this.state.teachers.map((teacher,index) => {
                                     return(
                                     <tr key={teacher.id}>
@@ -283,6 +292,7 @@ class SchoolClass extends Component {
                         </thead>
                         <tbody>
                         {
+                            this.state.students &&
                         this.state.students.map((student, index) => {
                                     return(
                                     <tr key={student.id}>

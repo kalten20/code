@@ -50,7 +50,6 @@ public class AnnouncementResource {
     @PutMapping (path = "/announcements/edit/{id}")
     public Announcement editAnnouncement(@PathVariable Long id,
                                          @RequestBody Announcement neuData) {
-        System.out.println(id);
 
         Announcement toEdit = announcementRepository.findById(id).get();
         toEdit.setSubject(neuData.getSubject());

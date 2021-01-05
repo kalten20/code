@@ -30,6 +30,15 @@ class ClassesDataService {
         return axios.put(`${API_URL}/schoolClass/${targetClass}/remove/${role}/${id}`)
     }
 
+    getMyClasses(id) {
+        return axios.get(`${API_URL}/${id}/myClasses`)
+    }
+
+    getMyClass(classId) {
+        return axios.get(`${API_URL}/myClass/${classId}`)
+
+    }
+
 
 }
 

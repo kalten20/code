@@ -1,5 +1,7 @@
 package group4.school4you.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +52,7 @@ public class SchoolClass {
 
         public void addStudent(Student toAdd){
             this.students.add(toAdd);
+            toAdd.setClassId(this.id);
         }
 
         public void removeStudent(Student toRemove) {
@@ -68,12 +71,14 @@ public class SchoolClass {
 
         public void addTeacher(Teacher toAdd){
         this.teachers.add(toAdd);
+        toAdd.addClass(this);
 
         }
 
         public void removeTeacher(Teacher toRemove){
         if (teachers.contains(toRemove)) {
             this.teachers.remove(toRemove);
+            toRemove.removeClass(this);
         }
         }
 

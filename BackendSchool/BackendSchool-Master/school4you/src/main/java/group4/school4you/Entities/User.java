@@ -121,7 +121,18 @@ public class User {
         return Objects.hash(id);
     }
 
-    public String toString () {
-        return super.toString();
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", creationDate=" + creationDate +
+                ", birthDate=" + birthDate +
+                ", approved=" + approved +
+                '}';
     }
 }

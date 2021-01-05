@@ -42,6 +42,9 @@ render() {
     currentRole === 'SECRETARY' && 
     secretaryControls
     }
+    {
+        this.props.teacherControl && secretaryControls
+    }
     
   </div>
 </div>
