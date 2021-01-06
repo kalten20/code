@@ -80,4 +80,8 @@ public class Secretary extends User {
         toEdit.setContent(content);
         toEdit.setDate(date);
     }
+
+    public void approveSickNote(SickNote sickNoteToApprove){
+        sickNoteToApprove.setApproved();
+    }
 }

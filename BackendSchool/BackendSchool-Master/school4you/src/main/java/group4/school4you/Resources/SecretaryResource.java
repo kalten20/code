@@ -19,6 +19,7 @@ public class SecretaryResource {
     private StudentRepository studentRepository;
     private schoolClassRepository schoolClassRepository;
     private AnnouncementRepository announcementRepository;
+    private SickNoteRepository sickNoteRepository;
 
     private Secretary secretary;
 
@@ -93,9 +94,6 @@ public class SecretaryResource {
     //==========================KLASSEN=================================
 
 
-    //wollen wir wirklich eine maximale teilnehmeranzahl? kommt in der praxis ja eigentlich nicht vor,
-    //dass eine klasse so groß wird?
-    //wie handhaben wir es wenn eine klasse mit diesem namen schon existiert?
     /**
      * With this method a secretary user creates a new class. It checks if the class is already existing
      * in the database. If not it creates a new one.
@@ -279,6 +277,61 @@ public class SecretaryResource {
     @DeleteMapping(path = "/secretary/announcements/deleteAnnouncement/{id}")
     public void deleteAnnouncement(@PathVariable long id){
         announcementRepository.deleteById(id);
+    }
+
+
+    //=========================Krankmeldungen==========================================
+
+    /**
+     * This method returns all unapproved sick notes or all sick notes from teachers or students. So the secretary is
+     * able to set them approved in the next step. At first the given role is checked and then depending on the role
+     * all unapproved sick notes are searched in the database.
+     * @return a list of unapproved sick notes from teachers or students.
+     */
+    @GetMapping(path = "/secretary/sickNote/getUnapprovedSickNotes/{role}")
+    public List<SickNote> teacherSickNotes(@PathVariable String role){
+        List<SickNote> sickNotes = null;
+        List<SickNote> allSickNotes = sickNoteRepository.getAll();
+
+        switch (role){
+            case "all":
+                for(SickNote sickNote : allSickNotes){
+                    if(!sickNote.getApproved()){
+                        sickNotes.add(sickNote);
+                    }
+                }
+                break;
+            case "teacher":
+                for (SickNote sickNote : allSickNotes) {
+                    if (sickNote.getRole().equals("teacher")) {
+                        if (!sickNote.getApproved()) {
+                            sickNotes.add(sickNote);
+                        }
+                    }
+                }
+                break;
+            case "student":
+                for (SickNote sickNote : allSickNotes) {
+                    if (sickNote.getRole().equals("student")) {
+                        if (!sickNote.getApproved()) {
+                            sickNotes.add(sickNote);
+                        }
+                    }
+                }
+                break;
+        }
+        return sickNotes;
+    }
+
+    /**
+     * The secretary is able to approve a sicknote coming from a teacher or parents from a student.
+     * @param sickNoteId the sick note from the database which will be approved by the secretary.
+     */
+    @PutMapping(path = "secretary/sickNote/approveSickNote/{sickNoteId}")
+    public void approveSickNote(@PathVariable long sickNoteId){
+        SickNote toApprove = sickNoteRepository.getOne(sickNoteId);
+        secretary.approveSickNote(toApprove);
+        sickNoteRepository.save(toApprove);
     }
 }
 
