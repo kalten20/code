@@ -20,7 +20,9 @@ public class TeacherResource {
     private UserJpaRepository userRepository;
     private AnnouncementRepository announcementRepository;
     private schoolClassRepository schoolClassRepository;
+    private StudentRepository studentRepository;
     private SickNoteRepository sickNoteRepository;
+    private GradeRepository gradeRepository;
     private ExamRepository examRepository;
     private UserService userService;
     private Teacher teacherToWorkWith;
@@ -150,4 +152,38 @@ public class TeacherResource {
         toEdit.addAnnouncement(newAnnouncement);
         schoolClassRepository.save(toEdit);
     }
+
+    //============================NOTEN===========================================
+    
+
+    /**
+     * A teacher can add a grade to a students grade list. For this he has to set a subject, a grade and a type
+     * of the grade (that means if it is a written or an oral grade).
+     * @param studentID To get the student which gets the grade of the database.
+     * @param grade The grade with all data to add to the student.
+     */
+    @PutMapping(path = "/teacher/addGrade/{studentID}")
+    public void addGrade(@PathVariable long studentID, @RequestBody Grade grade){
+        Student student = (Student) studentRepository.getOne(studentID);
+        Grade toAdd = new Grade(student.getId(), grade.getExamID(), grade.getGrade(), grade.getType());
+        teacherToWorkWith.addStudentGrade(student, toAdd);
+        gradeRepository.save(toAdd);
+        studentRepository.save(student);
+    }
+
+    /**
+     * A teacher can delete a students grade.
+     * @param studentID To get the student where the grade will be removed from.
+     * @param grade The grade which will be removed.
+     */
+    @DeleteMapping(path = "/teacher/deleteGrade/{studentID}/{grade}")
+    public void deleteGrade(@PathVariable long studentID, @PathVariable Grade grade){
+        Student student = (Student) studentRepository.getOne(studentID);
+        student.removeGrade(grade);
+        gradeRepository.delete(grade);
+        studentRepository.save(student);
+    }
+
+
+
 }

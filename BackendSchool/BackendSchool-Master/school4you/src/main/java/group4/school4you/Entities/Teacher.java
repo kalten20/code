@@ -37,4 +37,12 @@ public class Teacher extends User {
         Announcement created = new Announcement(sender, visibility, subject, content, date, classId);
         return created;
     }
+
+    public void addStudentGrade(Student student, Grade grade){
+        student.addGrade(grade);
+    }
+
+    public void removeStudentGrade(Student student, Grade grade){
+
+    }
 }
