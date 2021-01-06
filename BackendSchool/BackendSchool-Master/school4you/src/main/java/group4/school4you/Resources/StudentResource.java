@@ -1,9 +1,6 @@
 package group4.school4you.Resources;
 
-import group4.school4you.Entities.Announcement;
-import group4.school4you.Entities.Student;
-import group4.school4you.Entities.User;
-import group4.school4you.Entities.schoolClass;
+import group4.school4you.Entities.*;
 import group4.school4you.Repositories.StudentRepository;
 import group4.school4you.Repositories.schoolClassRepository;
 import group4.school4you.Repositories.AnnouncementRepository;
@@ -26,7 +23,7 @@ public class StudentResource {
 
     /**
      * this method gets all announcements for a certain student to show them in an overview. At first it searches for
-     * all announcements which are for all students and then it addes the announcements of the students class.
+     * all announcements which are for all students and then it adds the announcements of the students class.
      * @param studentMail the students mail to get the certain student from the database.
      * @return a list of announcements with all announcements for the student to show them in the frontend.
      */
@@ -51,7 +48,16 @@ public class StudentResource {
         return studentAnnouncements;
     }
 
-
+    /**
+     * A method to show the student all his grades.
+     * @param studentMail the students mail to get the certain student from the database.
+     * @return a list of all grades of the student.
+     */
+    @GetMapping(path = "/student/getAllGrades/{studentMail}")
+    public List<Grade> getStudentGrades(@PathVariable String studentMail){
+        Student student = (Student) studentRepository.findByEmail(studentMail);
+        return student.getStudentsGrades();
+    }
 
 
 }
