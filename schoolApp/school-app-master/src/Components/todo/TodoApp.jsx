@@ -26,6 +26,8 @@ import AnnouncementForm from '../AnnouncementsBuilder/AnnouncementForm'
 import Inbox from '../AnnouncementsBuilder/Inbox'
 import MyClasses from '../ClassBuilder/MyClasses'
 import MyClass from '../ClassBuilder/MyClass'
+import CoursePlaner from '../Termine/CoursePlaner'
+import ApiTester from '../Termine/ApiTester'
 
 
 
@@ -84,6 +86,10 @@ class TodoApp extends Component {
                         <Route path="/form" component={Form} />
                         <Route path="/signInValidation" component={SignInFormValidations} />
                         <Route path="/planer" component={Planer} />
+                        <AuthenticatedRoute path="/planen_Klasse_Lehrer/:classId/:teacherId" component={CoursePlaner} />
+
+                        <Route path="/ApiTester" component={ApiTester} />
+
 
                         
 

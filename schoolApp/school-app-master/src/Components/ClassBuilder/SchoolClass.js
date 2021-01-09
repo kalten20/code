@@ -195,6 +195,13 @@ class SchoolClass extends Component {
         this.setState({deleteClicked : !deleteClicked})
     }
 
+    assignTeacherClicked =(teacherId, classId)=> {
+        console.log(teacherId)
+        console.log(classId)
+        this.props.history.push(`/planen_Klasse_Lehrer/${classId}/${teacherId}`)
+
+    }
+
     render() {
 
         let addTeacher = 
@@ -260,6 +267,7 @@ class SchoolClass extends Component {
                                         <td>{teacher.lastName}</td>
                                         <td>{teacher.lastName}</td>
                                         <td><button onClick={() => this.deleteTeacherClicked(teacher.id, index, teacher.email)} className="btn btn-warning">Löschen</button></td>
+                                        <td><button onClick={() => this.assignTeacherClicked(teacher.id, this.state.class.id)} className="btn btn-warning">Planen</button></td>
 
 
                                     </tr>)
