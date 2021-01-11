@@ -91,6 +91,7 @@ class TodoApp extends Component {
                         <AuthenticatedRoute path="/planen_Klasse_Lehrer/:classId/:teacherId" component={CourseTeacherPlaner}/>
                         <AuthenticatedRoute path="/planen/:classId/" component={CoursePlaner} />
                         <AuthenticatedRoute path="/timetable/:classId/" component={TimeTableClass} />
+                        <AuthenticatedRoute path="/timetable/lehrer/:teacherId" component={TimeTableClass} />
                         
                         
 

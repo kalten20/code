@@ -117,6 +117,7 @@ class DynamicHeaderComponent extends Component {
                             {this.state.approved && <li><Link className="nav-link" to={"/Meine_Klassen/" + sessionStorage.getItem('id')}><FaUniversity /> Meine Klassen</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to={"/inbox/" + sessionStorage.getItem('role').toUpperCase()}><FaUniversity /> Inbox</Link></li>}
+                            {this.state.approved && <li><Link className="nav-link" to={"/timetable/lehrer/" + sessionStorage.getItem('id')}><FaUniversity /> Mein Plan</Link></li>}
 
                         </ul>
                     break;

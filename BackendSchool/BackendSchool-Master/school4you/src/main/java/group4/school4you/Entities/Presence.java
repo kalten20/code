@@ -10,7 +10,7 @@ public class Presence {
     @Id
     @GeneratedValue
     private Long id;
-    private Long userId;
+    private Long studentId;
     private Long appointmentId;
     private boolean isPresent;
 }

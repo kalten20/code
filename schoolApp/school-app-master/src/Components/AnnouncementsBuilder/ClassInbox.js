@@ -17,7 +17,8 @@ class ClassInbox extends Component {
         action: 'Erstellen',
         editing: false,
         editingId: 0,
-        editingIndex: 0
+        editingIndex: 0,
+        ids : []
     }
 
     componentDidMount() {
@@ -82,8 +83,9 @@ class ClassInbox extends Component {
         this.reeinitialize()
     }
 
-    submitCreate = (subject, content) => {
+    submitCreate = (subject, content, id) => {
         let neuData = {
+            id : id,
             subject: subject,
             content: content
         }
@@ -93,6 +95,7 @@ class ClassInbox extends Component {
         this.reeinitialize()
     }
     delete = (id, index) => {
+        
         let announcements = this.state.announcements
         announcements.splice(index, 1)
         this.setState({ announcements: announcements })

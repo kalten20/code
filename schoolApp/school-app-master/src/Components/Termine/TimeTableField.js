@@ -15,6 +15,8 @@ class TimeTableField extends Component {
     componentDidMount () {
         this.setState({week : this.props.week})
 
+        
+
         AppointmentDataService.getAppointmentByClassIdANndDateAndSlot(this.props.classId, this.props.date, this.props.slot)
         .then(response => {
             console.log(response.data)

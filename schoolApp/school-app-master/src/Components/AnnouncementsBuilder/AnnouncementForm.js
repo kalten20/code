@@ -22,10 +22,11 @@ class AnnouncementForm extends Component {
         }
 
         if(this.props.action === 'Erstellen') {
-            this.props.submitCreate(values.subject, values.content, values.visibility)
+            
             CommunicationDataService.createAnnouncement(announcement)
         .then(response => {
             console.log(response.data)
+            this.props.submitCreate(values.subject, values.content, values.visibility, response.data.id)
         })
         .catch(error => {
             console.log(error)

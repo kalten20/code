@@ -21,10 +21,11 @@ class ClassAnnouncementForm extends Component {
         }
         console.log(announcement)
         if(this.props.action === 'Erstellen') {
-            this.props.submitCreate(values.subject, values.content)
+            
             CommunicationDataService.createClassAnnouncement(announcement)
         .then(response => {
             console.log(response.data)
+            this.props.submitCreate(values.subject, values.content, response.data.id)
         })
         .catch(error => {
             console.log(error)

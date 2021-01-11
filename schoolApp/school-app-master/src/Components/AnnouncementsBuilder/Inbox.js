@@ -73,8 +73,9 @@ class Inbox extends Component {
         }
         this.reeinitialize()
     }
-    submitCreate = (subject, content, visibility) => {
+    submitCreate = (subject, content, visibility, id) => {
         let neuData = {
+            id: id,
             subject: subject,
             content: content,
             visibility: visibility

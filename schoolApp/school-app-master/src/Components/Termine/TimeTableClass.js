@@ -104,6 +104,7 @@ let timetable =
 
                                  week={this.state.week}
                                  classId={this.props.match.params.classId}
+                                 teacherId={this.props.match.params.teacherId}
                                  date={date.date} 
                                  slot={slot}
                                  />
