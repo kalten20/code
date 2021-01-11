@@ -196,10 +196,17 @@ class SchoolClass extends Component {
     }
 
     assignTeacherClicked =(teacherId, classId)=> {
-        console.log(teacherId)
-        console.log(classId)
+        
         this.props.history.push(`/planen_Klasse_Lehrer/${classId}/${teacherId}`)
 
+    }
+
+    planClass=()=>{
+        this.props.history.push(`/planen/${this.state.class.id}`)
+    }
+
+    timeTable=()=> {
+        this.props.history.push(`/timetable/${this.state.class.id}`)
     }
 
     render() {
@@ -239,7 +246,7 @@ class SchoolClass extends Component {
 
                 {/* LEHRER */}
 
-                <div className={classes.SchoolClasses}>
+                <div>
                 <p class="font-weight-bold">Lehrer</p>
         <Button btnType="Success" clicked={this.toggleAddTeacher}>Hinzufügen </Button>
         {this.state.showAddTeacher && addTeacher}
@@ -283,7 +290,7 @@ class SchoolClass extends Component {
 
 
                 {/* Schueler */}
-                <div className={classes.SchoolClasses}>
+                <div >
                 <p class="font-weight-bold">Studenten</p>
                 <Button btnType="Success" clicked={this.toggleAddStudent}>Hinzufügen</Button>
                 {this.state.showAddStudent && addStudent}
@@ -318,6 +325,10 @@ class SchoolClass extends Component {
                             }
                         </tbody>
                     </table>
+
+                    <button onClick={this.planClass} className="btn btn-dark">plan</button>
+                    <button onClick={this.timeTable} className="btn btn-dark">Timetable</button>
+
 
                 </div>
 

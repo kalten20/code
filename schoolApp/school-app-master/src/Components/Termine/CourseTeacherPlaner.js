@@ -5,15 +5,12 @@ import PlanerControl2 from './PlanerControl_v2';
 import PlanerControl3 from './PlanerControl_v3'
 
 
-class CoursePlaner extends Component {
-
-    
+class CourseTeacherPlaner extends Component {
 
     
 
     render() {
 
-       
         let weekDays = ['Mo', 'Di', 'Mi','Do','Fr','Sa','So' ]
 
        let today= moment(new Date()).format('YYYY-MM-DD')
@@ -24,7 +21,7 @@ class CoursePlaner extends Component {
        
 
        //MODULO 6 TO ALWAYS IGNOIRE SONNTAG 
-       for( var i = 0 ; i < 6; i++) {
+       for( var i = 0 ; i < 7; i++) {
            myWeek[i] = weekDays[(todayNumber-1)%6]
            todayNumber ++
        }
@@ -100,8 +97,7 @@ let myTimeTable =
                                     //  <th scope="row">{date.dayName}{date.date}{slot}</th>
                                     //  <th scope="row">
                                     
-                                         <PlanerControl3
-                                         
+                                         <PlanerControl2
                                          
                                         classId={this.props.match.params.classId}
                                         teacherId={this.props.match.params.teacherId}
@@ -152,4 +148,4 @@ let myTimeTable =
     }
 }
 
-export default CoursePlaner
+export default CourseTeacherPlaner

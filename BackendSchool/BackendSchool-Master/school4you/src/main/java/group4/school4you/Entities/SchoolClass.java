@@ -50,6 +50,8 @@ public class SchoolClass {
             return this.teachers;
         }
 
+
+
         public void addStudent(Student toAdd){
             this.students.add(toAdd);
             toAdd.setClassId(this.id);

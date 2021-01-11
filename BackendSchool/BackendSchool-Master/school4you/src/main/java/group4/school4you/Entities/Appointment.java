@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -18,12 +19,15 @@ public class Appointment {
     private Long id;
     private Long classId;
     private Long teacherId;
+    private Long recurrenceId;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
-    private String dayName;
+    private DayOfWeek dayOfWeek;
     private String slot;
     private Subject subject;
     private Type type;
+    private String teacherName;
+
 
     public Appointment(){}
 
@@ -32,6 +36,7 @@ public class Appointment {
         this.teacherId = teacherId;
         this.date = date;
         this.slot = slot;
+        this.dayOfWeek = date.getDayOfWeek();
     }
     public Appointment(Long classId, Long teacherId, LocalDate date,
                        String slot, Subject subject) {
@@ -40,6 +45,14 @@ public class Appointment {
         this.date = date;
         this.slot = slot;
         this.subject = subject;
+        this.dayOfWeek = date.getDayOfWeek();
+    }
+
+    public Appointment(Long classId, LocalDate date, String slot) {
+        this.classId = classId;
+        this.date=date;
+        this.slot = slot;
+        this.dayOfWeek = date.getDayOfWeek();
     }
 
     public Long getId() {
@@ -74,12 +87,12 @@ public class Appointment {
         this.date = date;
     }
 
-    public String getDayName() {
-        return dayName;
+    public DayOfWeek getDayName() {
+        return dayOfWeek;
     }
 
-    public void setDayName(String dayName) {
-        this.dayName = dayName;
+    public void setDayName(DayOfWeek dayName) {
+        this.dayOfWeek = dayName;
     }
 
     public String getSlot() {
@@ -106,6 +119,22 @@ public class Appointment {
         this.type = type;
     }
 
+    public Long getRecurrenceId() {
+        return recurrenceId;
+    }
+
+    public void setRecurrenceId(Long recurrenceId) {
+        this.recurrenceId = recurrenceId;
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -118,7 +147,7 @@ public class Appointment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, classId, teacherId, date, dayName, slot, subject);
+        return Objects.hash(id, classId, teacherId, date, dayOfWeek, slot, subject);
     }
 
     @Override
@@ -128,10 +157,23 @@ public class Appointment {
                 ", classId=" + classId +
                 ", teacherId=" + teacherId +
                 ", date=" + date +
-                ", dayName='" + dayName + '\'' +
+                ", dayName='" + dayOfWeek + '\'' +
                 ", slot='" + slot + '\'' +
                 ", subject='" + subject + '\'' +
                 ", type=" + type +
                 '}';
+    }
+
+    //returns true if the appointment is recurrent
+    public boolean isRecurrent() {
+        return recurrenceId != null;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 }

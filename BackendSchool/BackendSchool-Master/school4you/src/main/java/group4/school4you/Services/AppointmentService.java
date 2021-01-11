@@ -1,15 +1,17 @@
 package group4.school4you.Services;
 
-import group4.school4you.Entities.Appointment;
+import group4.school4you.Entities.*;
 import group4.school4you.Objects.FieldStatus;
 import group4.school4you.Objects.Subject;
-import group4.school4you.Repositories.AppointmentRepository;
+import group4.school4you.Objects.TeacherDto;
+import group4.school4you.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,6 +19,12 @@ public class AppointmentService {
 
     @Autowired
     AppointmentRepository appointmentRepository;
+    @Autowired
+    SchoolClassRepository schoolClassRepository;
+    @Autowired
+    RecurrenceRepository recurrenceRepository;
+    @Autowired
+    UserJpaRepository userRepository;
 
     public boolean checkAvailability(Appointment appointment) {
         List<Appointment> unavailableList = appointmentRepository.findAllByTeacherIdAndDateAndSlotAndClassIdNot(
@@ -45,6 +53,10 @@ public class AppointmentService {
     }
 
     public Appointment createAppointment(Appointment newAppointment) {
+        User currentTeacher = userRepository
+                .findById(newAppointment.getTeacherId()).get();
+        newAppointment.setTeacherName(currentTeacher.getFirstName()+ " " + currentTeacher.getLastName());
+
         return appointmentRepository.save(newAppointment);
     }
 
@@ -81,5 +93,128 @@ public class AppointmentService {
                 .findByClassIdAndTeacherIdAndDateAndSlot(classId, teacherId,
                         date,slot
                 );
+    }
+
+
+
+
+    // FOR STUNDEN PLAN BY CLASS
+
+    public List<Long> getTeacherIds(SchoolClass currentClass) {
+        List<Long> teacherIds = new ArrayList<>();
+        if(! currentClass.getTeachers().isEmpty()) {
+            for (Teacher teacher : currentClass.getTeachers()) {
+                teacherIds.add(teacher.getId());
+            }
+        }
+        return teacherIds;
+    }
+
+    public List<TeacherDto> findAvailableTeachers(Appointment appointment){
+        SchoolClass currentClass =
+                schoolClassRepository.findById(appointment.getClassId()).get();
+        List<Teacher> classTeachers = currentClass.getTeachers();
+        List<Long> classTeacherIds = getTeacherIds(currentClass);
+
+        //we get appointments where teachers of this class are booked in
+        // other class
+        List<Appointment> unavailableAppointments = appointmentRepository.
+                findAllByDateAndSlotAndClassIdNotAndTeacherIdIn(
+                        appointment.getDate(), appointment.getSlot(),
+                        appointment.getClassId(),classTeacherIds
+                );
+        List<Long> unavailableTeacherIds = new ArrayList<>();
+
+        if(!unavailableAppointments.isEmpty()) {
+            for (Appointment unavailable : unavailableAppointments) {
+                unavailableTeacherIds.add(unavailable.getTeacherId());
+            }
+        }
+
+            List<TeacherDto> availableClassTeachers = new ArrayList<>();
+
+        if (! classTeachers.isEmpty()) {
+            for (Teacher teacher : classTeachers) {
+                if (! unavailableTeacherIds.contains(teacher.getId())) {
+                    availableClassTeachers.add(new TeacherDto(teacher.getId()
+                            ,teacher.getFirstName(), teacher.getLastName()));
+                }
+            }
+        }
+
+        //WE RETURN THE CLASS TEACHERS THAT DO NOT HAVE APPOINTMENTS IN OTHER
+        // CLASSES AT THAT TIME
+        return availableClassTeachers;
+    }
+
+    public Appointment findAppointmentBy(Long classId, LocalDate appointmentDate,
+                               String slot) {
+        return appointmentRepository.findByClassIdAndDateAndSlot(classId,
+                appointmentDate,slot);
+    }
+
+    public boolean isSetAppointment(Long classId, LocalDate date, String slot) {
+        return appointmentRepository
+                .existsByClassIdAndDateAndSlot(classId,date,slot);
+    }
+
+
+    //FOR THE CASE WHERE WE PLAN FOR THE CLASS NOT THE TEACHER
+    public FieldStatus getFieldStatus(Long classId, LocalDate date, String slot) {
+        boolean isSet = isSetAppointment(classId, date, slot);
+
+        if (isSet) {
+            return FieldStatus.EDIT;
+        } else if (findAvailableTeachers(new Appointment(classId,date,slot)).isEmpty()) {
+            //no teacher in this class are available to do this course in
+            // this time
+            return FieldStatus.UNAVAILABLE;
+        } else return FieldStatus.CREATE;
+
+    }
+
+    public Appointment createRecurrentAppointment(Appointment appointment,
+                                                  Recurrence recurrence) {
+        //only one week
+        if (recurrence.getWeeks() == 0) {
+            return createAppointment(appointment);
+        }
+        else {
+            Appointment toReturn = new Appointment();
+            Recurrence appointmentRecurrence =
+                    recurrenceRepository.save(recurrence);
+            long weeks = recurrence.getWeeks();
+
+            for (long i =0; i < weeks ; i++) {
+
+                Appointment currentAppointment =
+                        appointmentRepository.save(new Appointment(appointment.getClassId(),
+                        appointment.getTeacherId(),
+                        appointment.getDate().plusWeeks(i),
+                        appointment.getSlot(),appointment.getSubject()));
+                currentAppointment.setRecurrenceId(appointmentRecurrence.getRecurrenceId());
+                User currentTeacher = userRepository
+                        .findById(currentAppointment.getTeacherId()).get();
+                currentAppointment.setTeacherName(currentTeacher.getFirstName()+ " " + currentTeacher.getLastName() );
+                if (i == 0) {
+                    toReturn = currentAppointment;
+                }
+            }
+            return toReturn;
+        }
+
+    }
+
+    public ResponseEntity<String> deleteAllFutureRecurrences(Long recurrenceId) {
+
+        //Only will delete the dates in the future
+        LocalDate deletionBegin = LocalDate.now();
+        appointmentRepository.deleteAllByRecurrenceIdAndDateIsGreaterThanEqual(recurrenceId
+                ,deletionBegin);
+        //Delete the recurrences from the recurrence table
+        recurrenceRepository.deleteById(recurrenceId);
+
+        return new ResponseEntity<String>("Deleted all future recurrences",
+                HttpStatus.OK);
     }
 }

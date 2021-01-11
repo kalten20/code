@@ -28,6 +28,8 @@ import MyClasses from '../ClassBuilder/MyClasses'
 import MyClass from '../ClassBuilder/MyClass'
 import CoursePlaner from '../Termine/CoursePlaner'
 import ApiTester from '../Termine/ApiTester'
+import CourseTeacherPlaner from '../Termine/CourseTeacherPlaner'
+import TimeTableClass from '../Termine/TimeTableClass'
 
 
 
@@ -86,7 +88,11 @@ class TodoApp extends Component {
                         <Route path="/form" component={Form} />
                         <Route path="/signInValidation" component={SignInFormValidations} />
                         <Route path="/planer" component={Planer} />
-                        <AuthenticatedRoute path="/planen_Klasse_Lehrer/:classId/:teacherId" component={CoursePlaner} />
+                        <AuthenticatedRoute path="/planen_Klasse_Lehrer/:classId/:teacherId" component={CourseTeacherPlaner}/>
+                        <AuthenticatedRoute path="/planen/:classId/" component={CoursePlaner} />
+                        <AuthenticatedRoute path="/timetable/:classId/" component={TimeTableClass} />
+                        
+                        
 
                         <Route path="/ApiTester" component={ApiTester} />
 

@@ -15,6 +15,13 @@ class ApiTester extends Component {
         //     console.log(error)
         // })
 
+       AppointmentDataService.getAvailableTeachersByClassIdDateSlot(21, '2021-01-11', '08:00 _ 10:00')
+        .then(response => {
+            console.log(response.data)
+        }).catch(error => {
+            console.log(error.response.data)
+        })
+
     }
     createAppointment=()=>{
         let newAppointment = {

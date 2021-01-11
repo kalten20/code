@@ -17,7 +17,8 @@ class PlanerControl2 extends Component {
         oldSubject : '',
         newSubject : '',
         edited : false, 
-        apiResponse : ''
+        apiResponse : '',
+        disabeledCreate : false
 
     }
 
@@ -82,6 +83,7 @@ class PlanerControl2 extends Component {
 
     //Submitting the creation
     submitCreate = () => {
+        this.setState({disabeledCreate : true})
         if(this.state.fieldStatus === 'CREATE' && (this.state.createdSubject !== '')) {
             let newAppointment = {
                 classId : this.props.classId,
@@ -90,7 +92,7 @@ class PlanerControl2 extends Component {
                 slot : this.props.slot,
                 subject : this.state.createdSubject.toLocaleUpperCase()
             }
-            AppointmentDataService.createAppointment(newAppointment)
+            AppointmentDataService.createAppointment(newAppointment,1)
             .then(response => {
                 this.setState({
                     fieldStatus : 'EDIT',
@@ -138,7 +140,7 @@ class PlanerControl2 extends Component {
 
     //****************** */
     dismissCreate=()=> {
-        this.setState({createdSubject : 'Frei'})
+        this.setState({createdSubject : 'Frei', disabeledCreate: false})
     }
 
     //When on EDIT mode and we click on delete 
@@ -148,7 +150,7 @@ class PlanerControl2 extends Component {
             this.setState({
                 apiResponse : response.data, fieldStatus : 'CREATE', createdSubject :'Frei', toEdit : {id : '0', subject : ''}, oldSubject : '',
                 newSubject : '',
-                edited : false
+                edited : false, disabeledCreate : false
             })
         }).catch(error => {
             console.log(error.response.data)
@@ -182,7 +184,7 @@ class PlanerControl2 extends Component {
                     </div>
                 </div>
                 {<p className={frei}>{this.state.createdSubject}</p>} {this.state.createdSubject !== 'Frei' && <span onClick={this.dismissCreate} class="badge badge-dark">x</span>}
-                {this.state.fieldStatus === 'CREATE' && this.state.createdSubject !== 'Frei' && <span onClick={this.submitCreate} class="badge badge-success">speichern</span>}
+                {this.state.fieldStatus === 'CREATE' && this.state.createdSubject !== 'Frei' && <button disabled={this.state.disabeledCreate} onClick={this.submitCreate} className="btn btn-sm btn-primary">speichern</button>}
 
             </div>
         // ******************************
