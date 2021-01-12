@@ -38,6 +38,11 @@ class AppointmentDataService {
         return axios.get(`${API_URL}/appointment/${classId}/${date}/${slot}`)
     }
 
+    getAppointmentByTeacherIdANndDateAndSlot(teacherId, date, slot) {
+        return axios.get(`${API_URL}/appointment/teacherTimetable/${teacherId}/${date}/${slot}`)
+
+    }
+
     createAppointment(newAppointment, weeks) {
         console.log(weeks)
         if(weeks <= 1) {

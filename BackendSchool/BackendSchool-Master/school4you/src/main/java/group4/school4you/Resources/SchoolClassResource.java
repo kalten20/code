@@ -125,6 +125,15 @@ public class SchoolClassResource {
 
     }
 
+    @GetMapping (path = "/class/{classId}/students/all")
+    public List<Student> getAllStudentsClass(@PathVariable Long classId) {
+        return schoolClassService.findAllStudents(classId);
+    }
+
+
+
+
+
 
 
 

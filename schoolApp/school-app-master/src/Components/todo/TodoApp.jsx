@@ -30,6 +30,7 @@ import CoursePlaner from '../Termine/CoursePlaner'
 import ApiTester from '../Termine/ApiTester'
 import CourseTeacherPlaner from '../Termine/CourseTeacherPlaner'
 import TimeTableClass from '../Termine/TimeTableClass'
+import Presencelist from '../Termine/PresenceList'
 
 
 
@@ -90,8 +91,18 @@ class TodoApp extends Component {
                         <Route path="/planer" component={Planer} />
                         <AuthenticatedRoute path="/planen_Klasse_Lehrer/:classId/:teacherId" component={CourseTeacherPlaner}/>
                         <AuthenticatedRoute path="/planen/:classId/" component={CoursePlaner} />
-                        <AuthenticatedRoute path="/timetable/:classId/" component={TimeTableClass} />
-                        <AuthenticatedRoute path="/timetable/lehrer/:teacherId" component={TimeTableClass} />
+                        <AuthenticatedRoute 
+                        path="/timetable/lehrer/:teacherId"
+                        render={(props) => (
+                            <TimeTableClass {...props} isTeacher={true} />
+                          )} 
+                          />
+                        <AuthenticatedRoute path="/timetable/:classId/" 
+                        render={(props) => (
+                            <TimeTableClass {...props} isTeacher={false} />
+                          )} />
+                          <AuthenticatedRoute path="/Anwesenheiten/Termin/:appointmentId" component={Presencelist}/>
+                        
                         
                         
 

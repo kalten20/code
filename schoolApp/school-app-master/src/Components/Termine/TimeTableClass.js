@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment'
 import TimeTableField from './TimeTableField';
+import TimeTableFieldTeacher from './TimeTableFieldTeacher';
 
 class TimeTableClass extends Component {
 
@@ -25,7 +26,10 @@ class TimeTableClass extends Component {
 
     render() {
 
-        console.log(this.state.week)
+        let today = new Date().toISOString().slice(0, 10)
+        
+    
+
 
 
         let curr = this.addDays(7 * this.state.week)
@@ -99,18 +103,39 @@ let timetable =
 
                      {
                          slots.map((slot, index) => {
-                             return (
-                                 <TimeTableField key={index}
 
-                                 week={this.state.week}
-                                 classId={this.props.match.params.classId}
-                                 teacherId={this.props.match.params.teacherId}
-                                 date={date.date} 
-                                 slot={slot}
-                                 />
+                            if(!this.props.isTeacher) {
+                                return (
 
+                                
+
+                                    <TimeTableField key={index}
+                                    week={this.state.week}
+                                    classId={this.props.match.params.classId}
+                                    teacherId={this.props.match.params.teacherId}
+                                    date={date.date} 
+                                    slot={slot}
+                                    />
+   
                 
-                             )
+                                )
+
+                            } else {
+                                return (
+                                    <TimeTableFieldTeacher
+                                    key={index}
+                                    week={this.state.week}
+                                    teacherId={this.props.match.params.teacherId}
+                                    date={date.date} 
+                                    today={today}
+                                    slot={slot}
+
+                                    />
+                                )
+                            }
+
+                             
+                             
                          })
                      }
                          </tr>
@@ -139,7 +164,7 @@ let timetable =
 
         return (
             <div>
-                <h3>Timetable Class {this.props.match.params.classId}</h3>
+                <h3>Timetable {this.props.match.params.classId}</h3>
         {this.state.week > 1 && <h4>Woche + {this.state.week}</h4>}
         {this.state.week === 1 && <h4>Nächste Woche </h4>}
 

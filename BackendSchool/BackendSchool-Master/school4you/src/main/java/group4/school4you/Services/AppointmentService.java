@@ -217,4 +217,11 @@ public class AppointmentService {
         return new ResponseEntity<String>("Deleted all future recurrences",
                 HttpStatus.OK);
     }
+
+    public Appointment
+    findAppointmentByTeacherIdAndDateAndSlot(Long teacherId,
+                                             LocalDate appointmentDate, String slot) {
+        return appointmentRepository.findByTeacherIdAndDateAndSlot(teacherId,
+                appointmentDate, slot);
+    }
 }

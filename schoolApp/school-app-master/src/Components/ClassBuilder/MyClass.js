@@ -39,6 +39,12 @@ class MyClass extends Component {
         this.setState({showNews : !this.state.showNews})
     }
 
+   
+        timeTable=()=> {
+            this.props.history.push(`/timetable/${this.props.match.params.classId}`)
+        }
+    
+
     render() {
 
         //creting teacher table
@@ -142,6 +148,7 @@ class MyClass extends Component {
                     <button type="button" class="btn btn-warning btn-sm" onClick={this.toggleStudents}>Lernende</button>  
                     <button type="button" class="btn btn-dark btn-sm" onClick={this.toggleNews}>News</button>  
                     <button type="button" class="btn btn-warning btn-sm" >Tests</button>  
+                    <button type="button" class="btn btn-dark btn-sm" onClick={this.timeTable}>Plan</button>
                     </div>
                 </div>
                 {this.state.showTeachers && teacherTable}

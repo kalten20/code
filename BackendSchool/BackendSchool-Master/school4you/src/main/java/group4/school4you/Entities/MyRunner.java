@@ -4,6 +4,7 @@ import group4.school4you.Objects.Role;
 import group4.school4you.Objects.Subject;
 import group4.school4you.Repositories.*;
 import group4.school4you.Services.AppointmentService;
+import group4.school4you.Services.PresenceService;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -37,6 +38,10 @@ public class MyRunner implements CommandLineRunner {
     AppointmentService appointmentService;
     @Autowired
     SchoolClassRepository schoolClassRepository;
+    @Autowired
+    PresenceService presenceService;
+    @Autowired
+    PresenceRepository presenceRepository;
 
     @Override
     public void run(String... userRepository) throws Exception {
@@ -54,6 +59,16 @@ public class MyRunner implements CommandLineRunner {
         if (!inboxRepository.existsByRole(Role.PARENT)) {
             inboxRepository.save(new Inbox(Role.PARENT));
         }
+
+        //presenceRepository.deleteAll();
+
+        //appointmentRepository.deleteAll();
+
+//        System.out.println(presenceService.findPresenceByAppointmentIdAndStudentId(
+//                new Long("5"), new Long("6"))
+//        );
+//
+
 
 
 

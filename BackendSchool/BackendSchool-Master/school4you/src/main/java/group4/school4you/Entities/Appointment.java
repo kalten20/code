@@ -37,6 +37,7 @@ public class Appointment {
         this.date = date;
         this.slot = slot;
         this.dayOfWeek = date.getDayOfWeek();
+        this.type = Type.COURSE;
     }
     public Appointment(Long classId, Long teacherId, LocalDate date,
                        String slot, Subject subject) {
@@ -46,6 +47,7 @@ public class Appointment {
         this.slot = slot;
         this.subject = subject;
         this.dayOfWeek = date.getDayOfWeek();
+        this.type = Type.COURSE;
     }
 
     public Appointment(Long classId, LocalDate date, String slot) {
@@ -53,7 +55,22 @@ public class Appointment {
         this.date=date;
         this.slot = slot;
         this.dayOfWeek = date.getDayOfWeek();
+        this.type = Type.COURSE;
     }
+
+    //constructor to set the type (exam or course)
+
+    public Appointment(Long classId, Long teacherId, LocalDate date,
+    String slot, Subject subject, Type type) {
+        this.classId = classId;
+        this.teacherId = teacherId;
+        this.date = date;
+        this.slot = slot;
+        this.subject = subject;
+        this.dayOfWeek = date.getDayOfWeek();
+        this.type = type;
+    }
+
 
     public Long getId() {
         return id;

@@ -39,6 +39,10 @@ class ClassesDataService {
 
     }
 
+    getClassStudents(classId) {
+        return axios.get(`${API_URL}/class/${classId}/students/all`)
+    }
+
 
 }
 

@@ -145,4 +145,8 @@ public class SchoolClassService {
     public void deleteClassAnnouncement(Long announcementId) {
         schoolClassAnnouncementRepository.deleteById(announcementId);
     }
+
+    public List<Student> findAllStudents(Long classId) {
+        return findById(classId).getStudents();
+    }
 }

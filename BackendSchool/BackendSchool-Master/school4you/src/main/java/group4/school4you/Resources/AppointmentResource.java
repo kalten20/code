@@ -170,6 +170,22 @@ public class AppointmentResource {
     }
 
 
+    // fuer teacher stundenplan
+
+    @GetMapping (path = "/appointment/teacherTimetable/{teacherId}/{date" +
+            "}/{slot}")
+    public Appointment
+    getAppointmentByTeacherIdAndDateAndSlot(@PathVariable Long teacherId,
+                                                               @PathVariable String date,
+                                                               @PathVariable String slot
+                                                               ) {
+        LocalDate appointmentDate = LocalDate.parse(date);
+        return appointmentService
+                .findAppointmentByTeacherIdAndDateAndSlot(teacherId,
+                        appointmentDate,slot);
+    }
+
+
 
 
 
