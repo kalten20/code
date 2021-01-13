@@ -40,6 +40,22 @@ class Inbox extends Component {
             })
     }
 
+    componentDidUpdate() {
+        if((this.props.match.params.role !== sessionStorage.getItem('role')) && (this.props.match.params.role !== this.state.role)) {
+            let role = this.props.match.params.role
+        this.setState({ role: role })
+        CommunicationDataService.getInbox(role)
+            .then(response => {
+                console.log(response.data.announcements)
+                this.setState({ announcements: response.data.announcements })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+        }
+    }
+
     toggleForm = () => {
         this.setState({ showForm: !this.state.showForm })
     }

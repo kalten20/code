@@ -134,7 +134,7 @@ class TodoApp extends Component {
 
                     </Switch>
 
-                    <FooterComponent/>
+                    {/* <FooterComponent/> */}
 
                     
 
