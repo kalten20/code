@@ -42,6 +42,8 @@ public class MyRunner implements CommandLineRunner {
     PresenceService presenceService;
     @Autowired
     PresenceRepository presenceRepository;
+    @Autowired
+    ExamRepository examRepository;
 
     @Override
     public void run(String... userRepository) throws Exception {
@@ -60,9 +62,11 @@ public class MyRunner implements CommandLineRunner {
             inboxRepository.save(new Inbox(Role.PARENT));
         }
 
+
+
         //presenceRepository.deleteAll();
 
-        //appointmentRepository.deleteAll();
+        appointmentRepository.deleteAll();
 
 //        System.out.println(presenceService.findPresenceByAppointmentIdAndStudentId(
 //                new Long("5"), new Long("6"))
@@ -83,13 +87,13 @@ public class MyRunner implements CommandLineRunner {
 
 
 
-//        appointmentRepository.save(new Appointment(new Long(17),
-//                new Long(7),LocalDate.now(),"08:00 _ 10:00", Subject.CHEMIE));
 
 
-//        Appointment testTestAppoint = new Appointment(new Long(17),
-//                new Long(7), LocalDate.now(),"14:00 _ 16:00" );
-        //appointmentRepository.save(testTestAppoint);
+
+        Exam testExam = new Exam(new Long(17),
+                new Long(7), LocalDate.now(),"14:00 _ 16:00",Subject.CHEMIE );
+        examRepository.save(testExam);
+
         System.out.println( "status is : " +
                 appointmentService.getFieldStatus(
                         new Appointment(new Long(21),

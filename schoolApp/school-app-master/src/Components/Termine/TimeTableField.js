@@ -9,7 +9,8 @@ class TimeTableField extends Component {
         appointment : {
             
         },
-        week : 0
+        week : 0,
+        type : ''
     }
 
     componentDidMount () {
@@ -19,7 +20,7 @@ class TimeTableField extends Component {
         .then(response => {
             console.log(response.data)
             if(response.data) {
-                this.setState({exists : true, appointment : response.data})
+                this.setState({exists : true, appointment : response.data, type : response.data.type})
             } else {
                 this.setState({exists : false})
             }
@@ -35,9 +36,9 @@ class TimeTableField extends Component {
         .then(response => {
             console.log(response.data)
             if(response.data) {
-                this.setState({exists : true, appointment : response.data})
+                this.setState({exists : true, appointment : response.data, type : response.data.type})
             } else {
-                this.setState({exists : false})
+                this.setState({exists : false, type : ''})
             }
         }).catch(error => {
             console.log(error.response.data)
@@ -52,10 +53,16 @@ class TimeTableField extends Component {
         let date = this.props.date
         let slot= this.props.slot
 
+        let examStyle =null
+        if(this.state.type === 'EXAM') {
+            examStyle = "#ff9d57"
+        }
+
 
         let appointment = 
         <div>
             <p><span class="text-monospace" >{this.state.appointment.subject}</span>, <span class="font-weight-lighter">{this.state.appointment.teacherName}</span> </p>
+            {this.state.type ==='EXAM' && <p><span class="text-monospace" >Prüfung</span></p>}
             
 
         </div>
@@ -65,7 +72,7 @@ class TimeTableField extends Component {
 
         
         return (
-            <th scope="row">
+            <th style={{backgroundColor : examStyle}} scope="row">
                 {! this.state.exists && <span class="badge badge-info">----</span>}
                 {this.state.exists && appointment}
                 

@@ -9,6 +9,7 @@ class TimeTableFieldTeacher extends Component {
         appointment : {
             
         },
+        type :'' ,
         week : 0
     }
 
@@ -19,7 +20,7 @@ class TimeTableFieldTeacher extends Component {
         AppointmentDataService.getAppointmentByTeacherIdANndDateAndSlot(this.props.teacherId, this.props.date, this.props.slot)
         .then(response => {
             if(response.data) {
-                this.setState({exists : true, appointment : response.data})
+                this.setState({exists : true, appointment : response.data , type : response.data.type})
             } else {
                 this.setState({exists : false})
             }
@@ -36,9 +37,9 @@ class TimeTableFieldTeacher extends Component {
         .then(response => {
             console.log(response.data)
             if(response.data) {
-                this.setState({exists : true, appointment : response.data})
+                this.setState({exists : true, appointment : response.data, type : response.data.type})
             } else {
-                this.setState({exists : false})
+                this.setState({exists : false, type : ''})
             }
         }).catch(error => {
             console.log(error.response.data)
@@ -59,18 +60,25 @@ class TimeTableFieldTeacher extends Component {
 
 
     render() {
+
+        let examStyle =null
+        if(this.state.type === 'EXAM') {
+            examStyle = "#ff9d57"
+        }
         
 
         let appointment = 
         <div>
-            <p><span class="text-monospace" >{this.state.appointment.subject}</span>, <span class="font-weight-lighter">Klasse id.{this.state.appointment.classId}</span> </p>
+            <p><span class="text-monospace" >{this.state.appointment.subject}</span>, <span class="font-weight-lighter">Klasse id.{this.state.appointment.classId}</span>
+             </p>
+            {this.state.type ==='EXAM' && <p><span class="text-monospace" >Prüfung</span></p>}
             
 
         </div>
             
 
         return (
-            <th scope="row">
+            <th style={{backgroundColor : examStyle}}  scope="row">
                 {! this.state.exists && <span class="badge badge-info">----</span>}
                 {this.state.exists && appointment}
                 {this.state.exists && (this.props.today >= this.state.appointment.date) &&

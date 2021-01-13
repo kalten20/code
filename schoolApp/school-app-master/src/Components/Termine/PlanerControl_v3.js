@@ -5,6 +5,7 @@ class PlanerControl3 extends Component {
 
     state = {
         sunday : false,
+        type : '' ,
         appointmentQueryData: {
 
         },
@@ -70,18 +71,24 @@ class PlanerControl3 extends Component {
                 if (response.data === 'EDIT') {
                     AppointmentDataService.getAppointmentByClassIdANndDateAndSlot(classId, date, slot)
                         .then(response => {
-                            let toEdit = {
-                                id: response.data.id,
-                                subject: response.data.subject,
-                                teacherId: response.data.teacherId
+                            if(response.data.type === 'EXAM') {
+                                this.setState({fieldStatus : 'EXAM'})
+                            } else {
+                                let toEdit = {
+                                    id: response.data.id,
+                                    subject: response.data.subject,
+                                    teacherId: response.data.teacherId
+                                }
+                                this.setState({
+                                    toEdit: toEdit,
+                                    oldSubject: response.data.subject,
+                                    oldTeacherId: response.data.teacherId,
+                                    oldTeacherName : response.data.teacherName
+                                })
                             }
-                            this.setState({
-                                toEdit: toEdit,
-                                oldSubject: response.data.subject,
-                                oldTeacherId: response.data.teacherId,
-                                oldTeacherName : response.data.teacherName
-                            })
-                        })
+
+                            }
+                            )
                         .catch(error => {
                             console.log(error.response.data)
                         })
@@ -430,6 +437,11 @@ class PlanerControl3 extends Component {
 
         /************************************* */
 
+        let exam = 
+        <div>
+                <span class="badge badge-danger">prüfung geplant</span>
+            </div>
+
         return (
 
             <th scope="row">
@@ -437,6 +449,7 @@ class PlanerControl3 extends Component {
                 {this.state.fieldStatus === 'CREATE' && create}
                 {this.state.fieldStatus === 'EDIT' && edit}
                 {this.state.fieldStatus === 'UNAVAILABLE' && disabeled}
+                {this.state.fieldStatus === 'EXAM' && exam}
                 {this.state.sunday && <span class="badge badge-secondary">Schule geschlossen</span>
 }
             </th>

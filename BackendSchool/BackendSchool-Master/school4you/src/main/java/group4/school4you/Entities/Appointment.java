@@ -4,14 +4,13 @@ import group4.school4you.Objects.Subject;
 import group4.school4you.Objects.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Appointment {
 
     @Id
@@ -29,7 +28,8 @@ public class Appointment {
     private String teacherName;
 
 
-    public Appointment(){}
+    public Appointment(
+    ){ this.type = Type.COURSE;}
 
     public Appointment(Long classId, Long teacherId, LocalDate date, String slot) {
         this.classId = classId;
@@ -193,4 +193,6 @@ public class Appointment {
     public void setTeacherName(String teacherName) {
         this.teacherName = teacherName;
     }
+
+
 }

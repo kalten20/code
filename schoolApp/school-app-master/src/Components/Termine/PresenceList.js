@@ -43,6 +43,7 @@ class Presencelist extends Component {
                     <li class="list-group-item text-monospace" >{this.state.appointment.date}</li>
                     <li class="list-group-item text-monospace">{this.state.appointment.slot}</li>
                     <li class="list-group-item text-monospace">{this.state.appointment.subject}</li>
+                    <li class="list-group-item text-monospace">{this.state.appointment.type}</li>
                 </ul>
 
                 <table className="table table-bordered table-striped">

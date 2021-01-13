@@ -8,6 +8,12 @@ import PlanerControl3 from './PlanerControl_v3'
 class CoursePlaner extends Component {
 
     
+        timeTable=()=> {
+            this.props.history.push(`/timetable/${this.props.match.params.classId}`)
+        }
+    
+
+    
 
     
 
@@ -135,6 +141,8 @@ let myTimeTable =
 
         return (
             <div>
+
+                <div><button onClick={this.timeTable} className="btn btn-sm btn-dark">Timetable</button></div>
 
 
                 course planer...classe 
