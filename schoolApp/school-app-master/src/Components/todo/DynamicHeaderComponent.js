@@ -63,7 +63,6 @@ class DynamicHeaderComponent extends Component {
                         {isUserLoggedIn && <li><Link className="nav-link" to="/verwalten/Lehrer"><FaUniversity /> Lehrer</Link></li>}
                         {isUserLoggedIn && <li><Link className="nav-link" to="/verwalten/Sekretariat"><FaUniversity /> Sekretariat</Link></li>}
                         {isUserLoggedIn && <li><Link className="nav-link" to="/verwalten/alle"><FaUniversity /> Nutzer Verwalten</Link></li>}
-                        {isUserLoggedIn && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
                     </ul>
                     break;
 
@@ -74,7 +73,6 @@ class DynamicHeaderComponent extends Component {
                             {this.state.approved && <li><Link className="nav-link" to="/verwalten/Lernende"><FaUniversity /> Lernende</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to="/verwalten/Eltern"><FaCalendarAlt /> Eltern</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to="/Klassen"><FaCalendarAlt /> Klassen</Link></li>}
-                            {this.state.approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
                             {
                             this.state.approved && <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown"
@@ -103,7 +101,6 @@ class DynamicHeaderComponent extends Component {
                         <ul className="navbar-nav nav-tabs">
                             {this.state.approved && <li><Link className="nav-link" to={"/Wellcome/" + sessionStorage.getItem('id')}><FaHome /> Start</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to="/verwalten/Lernende"><FaUniversity /> Meine Kinder</Link></li>}
-                            {this.state.approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
                             
                         {this.state.approved && <li><Link className="nav-link" to={"/inbox/" + sessionStorage.getItem('role').toUpperCase()}><FaUniversity /> Inbox</Link></li>}
                         
@@ -115,7 +112,6 @@ class DynamicHeaderComponent extends Component {
                         <ul className="navbar-nav nav-tabs">
                             {this.state.approved && <li><Link className="nav-link" to={"/Wellcome/" + sessionStorage.getItem('id')}><FaHome /> Start</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to={"/Meine_Klassen/" + sessionStorage.getItem('id')}><FaUniversity /> Meine Klassen</Link></li>}
-                            {this.state.approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to={"/inbox/" + sessionStorage.getItem('role').toUpperCase()}><FaUniversity /> Inbox</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to={"/timetable/lehrer/" + sessionStorage.getItem('id')}><FaUniversity /> Mein Plan</Link></li>}
 
@@ -126,7 +122,6 @@ class DynamicHeaderComponent extends Component {
                         <ul className="navbar-nav nav-tabs">
                             {this.state.approved && <li><Link className="nav-link" to={"/Wellcome/" + sessionStorage.getItem('id')}><FaHome /> Start</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to={"/Meine_Klassen/" + sessionStorage.getItem('id')}><FaUniversity /> Meine Klasse</Link></li>}
-                            {this.state.approved && <li><Link className="nav-link" to="/termine"><FaCalendarAlt /> Termine</Link></li>}
                             {this.state.approved && <li><Link className="nav-link" to={"/inbox/" + sessionStorage.getItem('role').toUpperCase()}><FaUniversity /> Inbox</Link></li>}
 
                         </ul>

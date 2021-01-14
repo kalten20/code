@@ -186,19 +186,29 @@ public class AppointmentService {
             long weeks = recurrence.getWeeks();
 
             for (long i =0; i < weeks ; i++) {
+                Long classId = appointment.getClassId();
+                Long teacherId = appointment.getTeacherId();
+                LocalDate date = appointment.getDate();
+                String slot = appointment.getSlot();
 
-                Appointment currentAppointment =
-                        appointmentRepository.save(new Appointment(appointment.getClassId(),
-                        appointment.getTeacherId(),
-                        appointment.getDate().plusWeeks(i),
-                        appointment.getSlot(),appointment.getSubject()));
-                currentAppointment.setRecurrenceId(appointmentRecurrence.getRecurrenceId());
-                User currentTeacher = userRepository
-                        .findById(currentAppointment.getTeacherId()).get();
-                currentAppointment.setTeacherName(currentTeacher.getFirstName()+ " " + currentTeacher.getLastName() );
-                if (i == 0) {
-                    toReturn = currentAppointment;
+                if(!appointmentRepository.existsByClassIdAndDateAndSlot(classId, date.plusWeeks(i), slot)
+                        && !appointmentRepository.existsByTeacherIdAndDateAndSlot(teacherId, date.plusWeeks(i), slot)) {
+                    Appointment currentAppointment =
+                            appointmentRepository.save(new Appointment(classId,
+                                    teacherId,
+                                    date.plusWeeks(i),
+                                    slot,appointment.getSubject()));
+                    currentAppointment.setRecurrenceId(appointmentRecurrence.getRecurrenceId());
+                    User currentTeacher = userRepository
+                            .findById(currentAppointment.getTeacherId()).get();
+                    currentAppointment.setTeacherName(currentTeacher.getFirstName()+ " " + currentTeacher.getLastName() );
+                    if (i == 0) {
+                        toReturn = currentAppointment;
+                    }
+
                 }
+
+
             }
             return toReturn;
         }

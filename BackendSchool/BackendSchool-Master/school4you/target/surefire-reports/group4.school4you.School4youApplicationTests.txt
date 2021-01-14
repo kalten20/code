@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: group4.school4you.School4youApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 38.809 s - in group4.school4you.School4youApplicationTests

@@ -48,6 +48,11 @@ public class Exam extends Appointment {
     }
 
     @Override
+    public Type getType() {
+        return Type.EXAM;
+    }
+
+    @Override
     public String toString() {
         return "Exam{" +
                 "description='" + description + '\'' +

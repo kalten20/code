@@ -77,7 +77,7 @@ class AnnouncementForm extends Component {
     }
     render() {
         return (
-            <div className={classes.User} >
+            <div>
 
                 <Formik
 

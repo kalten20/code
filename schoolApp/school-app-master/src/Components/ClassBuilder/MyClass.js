@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ClassesDataService from '../../api/ClassesDataService'
 import ClassInbox from '../AnnouncementsBuilder/ClassInbox'
 import Inbox from '../AnnouncementsBuilder/Inbox'
+import Exams from '../Termine/Exams'
 
 class MyClass extends Component {
 
@@ -16,7 +17,8 @@ class MyClass extends Component {
         },
         showTeachers : false,
         showStudents : false,
-        showNews : false
+        showNews : true,
+        showExams : false
     }
 
     componentDidMount() {
@@ -37,6 +39,10 @@ class MyClass extends Component {
     }
     toggleNews =()=>{
         this.setState({showNews : !this.state.showNews})
+    }
+
+    toggleExams=()=> {
+        this.setState({showExams : !this.state.showExams})
     }
 
    
@@ -147,14 +153,15 @@ class MyClass extends Component {
                     <button type="button" class="btn btn-dark btn-sm" onClick={this.toggleTeachers}>Lehrer</button>  
                     <button type="button" class="btn btn-warning btn-sm" onClick={this.toggleStudents}>Lernende</button>  
                     <button type="button" class="btn btn-dark btn-sm" onClick={this.toggleNews}>News</button>  
-                    <button type="button" class="btn btn-warning btn-sm" >Tests</button>  
+                    <button type="button" class="btn btn-warning btn-sm" onClick={this.toggleExams} >Tests</button>  
                     <button type="button" class="btn btn-dark btn-sm" onClick={this.timeTable}>Plan</button>
                     </div>
                 </div>
                 {this.state.showTeachers && teacherTable}
                 {this.state.showStudents && studentTable}
-                {this.state.showNews && <ClassInbox classId={this.props.match.params.classId} />
-}
+                {this.state.showNews && <ClassInbox classId={this.props.match.params.classId} />}
+                {this.state.showExams && <Exams classId={this.props.match.params.classId}/>}
+
             </div>
         )
     }

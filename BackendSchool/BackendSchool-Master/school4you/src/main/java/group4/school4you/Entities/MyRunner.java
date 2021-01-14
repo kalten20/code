@@ -4,8 +4,8 @@ import group4.school4you.Objects.Role;
 import group4.school4you.Objects.Subject;
 import group4.school4you.Repositories.*;
 import group4.school4you.Services.AppointmentService;
+import group4.school4you.Services.ExamService;
 import group4.school4you.Services.PresenceService;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -44,6 +44,8 @@ public class MyRunner implements CommandLineRunner {
     PresenceRepository presenceRepository;
     @Autowired
     ExamRepository examRepository;
+    @Autowired
+    ExamService examService;
 
     @Override
     public void run(String... userRepository) throws Exception {
@@ -91,8 +93,33 @@ public class MyRunner implements CommandLineRunner {
 
 
         Exam testExam = new Exam(new Long(17),
-                new Long(7), LocalDate.now(),"14:00 _ 16:00",Subject.CHEMIE );
+                new Long(7), LocalDate.now(),"12:00 _ 14:00",Subject.CHEMIE );
         examRepository.save(testExam);
+
+        Appointment appointment1 = new Appointment(new Long(17),
+                new Long(7), LocalDate.now(),"14:00 _ 16:00", Subject.CHEMIE );
+        appointmentRepository.save(appointment1);
+
+        Exam exam2 = new Exam(new Long(21),
+                new Long(7), LocalDate.now(),"10:00 _ 12:00", Subject.CHEMIE );
+        examRepository.save(exam2);
+
+        Exam exam1 = new Exam(new Long(17),
+                new Long(7), LocalDate.now(),"14:00 _ 16:00", Subject.CHEMIE );
+        System.out.println("Exam creation test : " + examService.createExam(exam1));
+
+
+
+
+
+
+
+
+
+
+        System.out.println(examService.findAllByClassId(new Long("17")));
+        System.out.println(examService.getUnavailableByTeacherAndClass(new Long("7"),new Long("17")));
+
 
         System.out.println( "status is : " +
                 appointmentService.getFieldStatus(

@@ -274,7 +274,7 @@ class SchoolClass extends Component {
                                         <td>{teacher.lastName}</td>
                                         <td>{teacher.lastName}</td>
                                         <td><button onClick={() => this.deleteTeacherClicked(teacher.id, index, teacher.email)} className="btn btn-warning">Löschen</button></td>
-                                        <td><button onClick={() => this.assignTeacherClicked(teacher.id, this.state.class.id)} className="btn btn-warning">Planen</button></td>
+                                        {/* <td><button onClick={() => this.assignTeacherClicked(teacher.id, this.state.class.id)} className="btn btn-warning">Planen</button></td> */}
 
 
                                     </tr>)
